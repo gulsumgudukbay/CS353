@@ -214,6 +214,9 @@ public class TableCreator {
 													+ "FOREIGN KEY (user_id) references User(user_id),"
 													+ "FOREIGN KEY (challenge_id) references Challenge(challenge_id)  ) ENGINE = InnoDB;");
 			
+			
+			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
