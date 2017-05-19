@@ -83,11 +83,11 @@ public class TableCreator {
 			
 			stmt.executeUpdate("CREATE TABLE Developer( user_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "school varchar(40) NOT NULL, "
-													+ "FOREIGN KEY (user_id) references User(user_id)) ENGINE = InnoDB;");
+													+ "FOREIGN KEY (user_id) references User(user_id) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB;");
 			
 			stmt.executeUpdate("CREATE TABLE Company( user_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "company_name varchar(40) NOT NULL, "
-													+ "FOREIGN KEY (user_id) references User(user_id)) ENGINE = InnoDB;");
+													+ "FOREIGN KEY (user_id) references User(user_id) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB;");
 
 			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, biography) "
 													+ "VALUES (NULL, 'gulsumg', 'gulsum', 'gudukbay@gmail.com', 'pass123', "
@@ -128,21 +128,37 @@ public class TableCreator {
 													+ "FOREIGN KEY (to_id) references User(user_id), "
 													+ "FOREIGN KEY (from_id) references User(user_id))  ENGINE = InnoDB;");
 			
+			stmt.executeUpdate("INSERT INTO Message VALUES (NULL, 'HELLO FROM 1 to 2', NOW(), 2, 1);");
+			stmt.executeUpdate("INSERT INTO Message VALUES (NULL, 'HI FROM 2 to 1', NOW(), 1, 2);");
+
+			
 			stmt.executeUpdate("CREATE TABLE Language ( language_id int PRIMARY KEY AUTO_INCREMENT,"
 													+ "lang_name varchar(30) NOT NULL) ENGINE = InnoDB; ");
 			
+			stmt.executeUpdate("INSERT INTO Language VALUES (NULL, 'C++');");
+			stmt.executeUpdate("INSERT INTO Language VALUES (NULL, 'Java');");
+
 			stmt.executeUpdate("CREATE TABLE Topic (topic_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "topic_name varchar(40) NOT NULL) ENGINE = InnoDB;");
 			
+			stmt.executeUpdate("INSERT INTO Topic VALUES (NULL, 'Dynamic Programming');");
+			stmt.executeUpdate("INSERT INTO Topic VALUES (NULL, 'Greedy Algorithms');");
+
 			stmt.executeUpdate("CREATE TABLE Track ( track_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "track_name varchar(40) NOT NULL, "
 													+ "track_desc varchar(200)) ENGINE = InnoDB;");
+			
+			stmt.executeUpdate("INSERT INTO Track VALUES (NULL, 'Algorithms', 'Algorithms is a track.');");
+
 			
 			stmt.executeUpdate("CREATE TABLE TrackTopic (track_id int, topic_id int , "
 													+ "PRIMARY KEY (track_id, topic_id), "
 													+ "FOREIGN KEY (track_id) references Track(track_id), "
 													+ "FOREIGN KEY (topic_id) references Topic(topic_id)) ENGINE = InnoDB;");
 			
+			stmt.executeUpdate("INSERT INTO TrackTopic VALUES (1, 1);");
+			stmt.executeUpdate("INSERT INTO TrackTopic VALUES (1, 2);");
+
 			stmt.executeUpdate("CREATE TABLE Challenge ( challenge_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "name	varchar(40), "
 													+ "deadline date NOT NULL, "
@@ -150,6 +166,8 @@ public class TableCreator {
 													+ "is_active bit NOT NULL, "
 													+ "FOREIGN KEY (topic_id)  REFERENCES Topic(topic_id)) ENGINE = InnoDB;");
 
+			stmt.executeUpdate("INSERT INTO Challenge VALUES (NULL, 'Find the Dunya Lideri', '2017-02=11', 1, 1);");
+			
 			stmt.executeUpdate("CREATE TABLE DeveloperChallenge ( user_id int, "
 													+ "challenge_id int, "
 													+ "challenge_score int NOT NULL, "
@@ -157,33 +175,44 @@ public class TableCreator {
 													+ "FOREIGN KEY (user_id) REFERENCES Developer(user_id),"
 													+ "FOREIGN KEY (challenge_id) REFERENCES Challenge(challenge_id)) ENGINE = InnoDB;");
 			
+			stmt.executeUpdate("INSERT INTO DeveloperChallenge VALUES (1, 1, FLOOR(RAND()*100));");
+
 			stmt.executeUpdate("CREATE TABLE Question (question_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "difficulty enum('easy', 'medium', 'hard') NOT NULL, "
 													+ "challenge_id int NOT NULL, "
 													+ "title varchar(50) NOT NULL, "
 													+ "FOREIGN KEY (challenge_id) references Challenge(challenge_id) ) ENGINE = InnoDB;");
 			
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'medium', 1, 'Knapsack Problem');");
+			
 			stmt.executeUpdate("CREATE TABLE Position2( ident int PRIMARY KEY AUTO_INCREMENT, "
 													+ "p_name varchar(30), "
 													+ "user_id int, "
 													+ "FOREIGN KEY (user_id) references Company(user_id)"
-													+ "ON DELETE CASCADE) ENGINE = InnoDB;");
-								
+													+ "ON DELETE CASCADE) ENGINE = InnoDB;");			
+			
 			stmt.executeUpdate("ALTER TABLE Position2 add constraint ideent unique(p_name, user_id);");
 			
 			stmt.executeUpdate("CREATE INDEX posind ON Position2 (p_name, user_id);");
+			
+			stmt.executeUpdate("INSERT INTO Position2 VALUES( NULL, 'Software Developer', 2);");
 			
 			stmt.executeUpdate("CREATE TABLE ChallengePosition ( challenge_id int, "
 													+ "ident int, "
 													+ "PRIMARY KEY (challenge_id, ident),"
 													+ "FOREIGN KEY (challenge_id) REFERENCES Challenge(challenge_id),"
 													+ "FOREIGN KEY (ident) REFERENCES Position2(ident)) ENGINE = InnoDB;");
-
+			
+			stmt.executeUpdate("INSERT INTO ChallengePosition VALUES (1, 1);");
+			
 			stmt.executeUpdate("CREATE TABLE QuestionLanguage ( language_id	int,"
 													+ "question_id int NOT NULL, "
 													+ "PRIMARY KEY (language_id, question_id),"
 													+ "FOREIGN KEY (language_id) REFERENCES Language(language_id),"
 													+ "FOREIGN KEY (question_id) REFERENCES Question(question_id)) ENGINE = InnoDB;");
+
+			stmt.executeUpdate("INSERT INTO QuestionLanguage VALUES (1, 1);");
+			stmt.executeUpdate("INSERT INTO QuestionLanguage VALUES (2, 1);");
 
 			stmt.executeUpdate("CREATE TABLE Submission ( sub_id int AUTO_INCREMENT, "
 													+ "sub_date timestamp NOT NULL, "
@@ -193,6 +222,8 @@ public class TableCreator {
 													+ "PRIMARY KEY (sub_id, user_id, question_id),"
 													+ "FOREIGN KEY (user_id) REFERENCES User(user_id),"
 													+ "FOREIGN KEY (question_id) REFERENCES Question(question_id)) ENGINE = InnoDB;");
+
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 1, FLOOR(RAND()*100));");
 			
 			stmt.executeUpdate("CREATE TABLE Experience ( company_name varchar(40), "
 													+ "start_date date, "
@@ -202,12 +233,16 @@ public class TableCreator {
 													+ "PRIMARY KEY (company_name, start_date, end_date, position, user_id), "
 													+ "FOREIGN KEY (user_id) REFERENCES Developer(user_id) "
 													+ "ON DELETE CASCADE) ENGINE = InnoDB;");
+
+			stmt.executeUpdate("INSERT INTO Experience VALUES ('SRDC', '2000-03-06', '2017-10-03', 1, 'Software Developer');");
 			
 			stmt.executeUpdate("CREATE TABLE Badge( badge_id int PRIMARY KEY AUTO_INCREMENT, "
-													+ "badge_name varchar(40) NOT NULL, "
+													+ "badge_name enum('Bronze', 'Silver', 'Gold') NOT NULL, "
 													+ "user_id int NOT NULL, "
 													+ "badge_desc varchar(200),"
 													+ "FOREIGN KEY (user_id) REFERENCES Developer(user_id)) ENGINE = InnoDB;");
+			
+			stmt.executeUpdate("INSERT INTO Badge VALUES (NULL, 'Silver', 1, 'This badge was given due to the developer solving 10 challenges from the Algorithms track.');");
 			
 			stmt.executeUpdate("CREATE TABLE BadgeTrack ( badge_id int, "
 													+ "track_id int, "
@@ -215,6 +250,8 @@ public class TableCreator {
 													+ "FOREIGN KEY (badge_id) references Badge(badge_id), "
 													+ "FOREIGN KEY (track_id) references Track(track_id)) ENGINE = InnoDB;");
 			
+			stmt.executeUpdate("INSERT INTO BadgeTrack VALUES (1, 1);");
+
 			stmt.executeUpdate("CREATE TABLE DeveloperTrack ( user_id int, "
 													+ "track_id int, "
 													+ "track_score int NOT NULL, "
@@ -222,6 +259,9 @@ public class TableCreator {
 													+ "FOREIGN KEY (user_id) references Developer(user_id), "
 													+ "FOREIGN KEY (track_id) references Track(track_id)) ENGINE = InnoDB;");
 
+			stmt.executeUpdate("INSERT INTO DeveloperTrack VALUES (1, 1, FLOOR(RAND()*100));");
+
+			
 			stmt.executeUpdate("CREATE TABLE Comment ( com_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "text varchar(140) NOT NULL, "
 													+ "date timestamp NOT NULL, "
@@ -233,6 +273,9 @@ public class TableCreator {
 													+ "FOREIGN KEY (challenge_id) references Challenge(challenge_id)  ) ENGINE = InnoDB;");
 			
 			
+			stmt.executeUpdate("INSERT INTO Comment VALUES (NULL, 'THIS CHALLENGE IS AWSAM.', NOW(), NULL, 1, 1);");
+			stmt.executeUpdate("INSERT INTO Comment VALUES (NULL, 'I AGREE!.', NOW(), 1, 2, 1);");
+
 			
 			
 		} catch (SQLException e) {
