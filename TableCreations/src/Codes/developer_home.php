@@ -10,7 +10,8 @@ $result = mysqli_query($db,$sql);
 $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $myuser_name = $row1["user_name"];
 echo "<h1>Welcome, {$myuser_name}!</h1>";
-
+echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
+echo "<div id='second-div' style='text-align:right;width:50%'><img src='./dev_profile.png' style='height:64;width:64'><img><img src='./dev_stats.png' style='height:64;width:64'><img><img src='./messages.png' style='height:64;width:64'><img></div></div>";
 echo "<h2>Job Challenges</h2>";
 echo "<div class='datagrid'><table>";
 echo  "<thead><tr><th>Job Title</th><th>Company</th><th>Challenge Name</th><th>Deadline</th></tr></thead>";
@@ -98,19 +99,7 @@ body
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
-  </div>
 
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./dev_profile.png" style="height:64;width:64"><img>
-    <img src="./dev_stats.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-
-</div>
-<hr/>
 
 
 
