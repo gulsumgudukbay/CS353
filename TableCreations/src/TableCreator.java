@@ -13,7 +13,7 @@ public class TableCreator {
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://dijkstra2.ug.bcc.bilkent.edu.tr/test", "gulsum.gudukbay", "ibdb8y1ir");
+			con = DriverManager.getConnection("jdbc:mysql://dijkstra2.ug.bcc.bilkent.edu.tr/gulsum_gudukbay", "gulsum.gudukbay", "ibdb8y1ir");
 			stmt = con.createStatement();
 		}catch(SQLException ex){
 			ex.printStackTrace();
