@@ -26,7 +26,7 @@ body
 <hr />
 <p>&nbsp;</p>
 <h2 style="text-align: center;">Login unsuccessful.</h2>
-<form style="text-align: center;" action="./index.html">
+<form style="text-align: center;" action="./index.php">
 <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"><br /></span></span> <input type="submit" value="Go back" /></p>
 <p>&nbsp;</p>
 <hr />

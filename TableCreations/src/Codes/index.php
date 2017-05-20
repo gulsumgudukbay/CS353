@@ -2,46 +2,69 @@
 
 include('config.php');
 session_start();
-
+echo "hello";
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   // get the username and password sent from form
-
   $myusername = mysqli_real_escape_string($db,$_POST['username']);
   $mypassword = mysqli_real_escape_string($db,$_POST['password']);
 
   $_SESSION[myusername] = $myusername;
   $_SESSION[mypassword] = $mypassword;
 
-  $sql = "SELECT user_id FROM User WHERE username = '$myusername' and password = '$mypassword'";
+  $sql = "SELECT * FROM User WHERE username = '$myusername' and password = '$mypassword'";
   $result = mysqli_query($db,$sql);
-  $row1 = mysqli_fetch_array($result,MYSQLI_ASSOC);
+  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
   $count = mysqli_num_rows($result);
+  $_SESSION[myuser_id] = intval($row1["user_id"]);
 
   // If result matches, table row count should be 1
 
   if($count == 1) {
-    $sql = "SELECT user_id FROM Developer WHERE user_id =" .intval($row1["user_id"]);
+
+    $sql = "SELECT * FROM Developer WHERE user_id =".intval($row1["user_id"]);
     $result = mysqli_query($db,$sql);
-    $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+    $row2 = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $devcount = mysqli_num_rows($result);
 
-    $sql = "SELECT user_id FROM Company WHERE user_id =". intval($row1["user_id"]);
+    $sql = "SELECT * FROM Company WHERE user_id =".intval($row1["user_id"]);
     $result = mysqli_query($db,$sql);
-    $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+    $row3 = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $compcount = mysqli_num_rows($result);
 
     if($devcount >= 1) //developer
+
+      // $_SESSION[myuser_id] = intval($row1["user_id"]);
+      // $_SESSION[myusername] = $row1["username"];
+      // $_SESSION[myuser_name] = $row1["user_name"];
+      // $_SESSION[myemail] = $row1["email"];
+      // $_SESSION[mypassword] = $row1["password"];
+      // $_SESSION[mywebsite] = $row1["website"];
+      // $_SESSION[mybiography] = $row1["biography"];
+      // $_SESSION[myschool] = $row2["school"];
+
       header("location:developer_home.php");
+
     elseif($compcount >= 1) // company
+      // $_SESSION[myuser_id] = intval($row1["user_id"]);
+      // $_SESSION[myusername] = $row1["username"];
+      // $_SESSION[myuser_name] = $row1["user_name"];
+      // $_SESSION[myemail] = $row1["email"];
+      // $_SESSION[mypassword] = $row1["password"];
+      // $_SESSION[mywebsite] = $row1["website"];
+      // $_SESSION[mybiography] = $row1["biography"];
+      // $_SESSION[mycompany_name] = $row3["company_name"];
+
       header("location:company_home.php");
-    else {
+
+    else { // invalid login!
       header("location:invalidlogin.php");
     }
 
-  }else {
+  }else { // invalid login
     $error = "The login name or password is invalid";
-    echo $error;
+   echo $error;
+    header("location:invalidlogin.php");
   }
 }
 ?>

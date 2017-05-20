@@ -1,8 +1,8 @@
 <?php
    include('config.php');
    session_start();
- 	$myusername = $_SESSION['myusername'];
-	$mypassword = $_SESSION['mypassword'];
+ 	$myusername = $_SESSION['username'];
+	$mypassword = $_SESSION['password'];
 
 	echo "<h1>Welcome </h1>";
 
@@ -76,11 +76,11 @@ body
 
 <p><br></p>
 
-<form style="text-align: left;" action="./create_challenge.html">
+<form style="text-align: left;" action="./create_challenge.php">
 <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Create New Challenge" /></p>
 </form>
 
-<form style="text-align: left;" action="./create_question.html">
+<form style="text-align: left;" action="./create_question.php">
 <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Create New Question" /></p>
 </form>
 

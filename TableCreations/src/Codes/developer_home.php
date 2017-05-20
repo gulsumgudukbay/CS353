@@ -3,8 +3,38 @@
    session_start();
  	$myusername = $_SESSION['myusername'];
 	$mypassword = $_SESSION['mypassword'];
+  $myuser_id = $_SESSION['myuser_id'];
 
-	echo "<h1>Welcome </h1>";
+  $sql = "SELECT * FROM User WHERE user_id = $myuser_id";
+  $result = mysqli_query($db,$sql);
+  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $myuser_name = $row1["user_name"];
+	echo "<h1>Welcome, {$myuser_name}!</h1>";
+
+  echo "<h2>Job Challenges</h2>";
+  echo "<div class="datagrid"><table>";
+  echo  "<thead><tr><th>Job Title</th><th>Company</th><th>Challenge Name</th><th>Deadline</th></tr></thead>";
+  echo "<tbody>";
+    <tr><td>Software Engineer</td><td>Bilka</td><td>Nameless Challenge</td><td>9.4.2017</td></tr>
+      <tr class="alt"><td>Data Scientist</td><td>Meteksan</td><td>Faceless Challenge</td><td>6.4.2017</td></tr>
+      <tr><td>Web Developer</td><td>Sözeri</td><td>Mercyless Ch.</td><td>5.4.2017</td></tr>
+      <tr class="alt"><td>Machine Learning Engineer</td><td>Sun Brothers</td><td>Easy one</td><td>2.4.2017</td></tr>
+      <tr><td>IT Manager</td><td>Tatlıses Çiğköfte</td><td>Are you ready</td><td>28.3.2017</td></tr>
+  echo "</tbody></table></div>";
+
+  echo "<p><br></p>";
+
+  echo "<h2>Practice Questions</h2>";
+  echo "<div class="datagrid"><table>";
+  echo "<thead><tr><th>Question Name</th><th>Challenge</th><th>Submissions</th></tr></thead>";
+    <tbody><tr><td>Lahmacun Hunters</td><td>Heroes of the Kebab Saloon</td><td>374</td></tr>
+      <tr class="alt"><td>Angry Meatballs</td><td>Heroes of the Kebab Saloon</td><td>41</td></tr>
+      <tr><td>Beyti Rush</td><td>Heroes of the Kebab Saloon</td><td>37</td></tr>
+      <tr class="alt"><td>Shortest Path in Adana</td><td>Heroes of the Kebab Saloon</td><td>104</td></tr>
+      <tr><td>Cut the Baklava</td><td>Heroes of the Kebab Saloon</td><td>896</td></tr>
+  echo "</tbody></table></div>";
+
+
 
 
 ?>
@@ -61,35 +91,7 @@ body
 
 </div>
 <hr/>
-<h2>Welcome, Yiğit!</h2>
 
-<h3>Job Challenges
-</h3>
-<div class="datagrid"><table>
-  <thead><tr><th>Job Title</th><th>Company</th><th>Challenge Name</th><th>Deadline</th></tr></thead>
-  <tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>
-  <tbody><tr><td>Software Engineer</td><td>Bilka</td><td>Nameless Challenge</td><td>9.4.2017</td></tr>
-    <tr class="alt"><td>Data Scientist</td><td>Meteksan</td><td>Faceless Challenge</td><td>6.4.2017</td></tr>
-    <tr><td>Web Developer</td><td>Sözeri</td><td>Mercyless Ch.</td><td>5.4.2017</td></tr>
-    <tr class="alt"><td>Machine Learning Engineer</td><td>Sun Brothers</td><td>Easy one</td><td>2.4.2017</td></tr>
-    <tr><td>IT Manager</td><td>Tatlıses Çiğköfte</td><td>Are you ready</td><td>28.3.2017</td></tr>
-  </tbody>
-  </table>
-</div>
 
-<p><br></p>
-
-<h3>Practice Questions</h3>
-<div class="datagrid"><table>
-  <thead><tr><th>Question Name</th><th>Challenge</th><th>Submissions</th></tr></thead>
-  <tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>
-  <tbody><tr><td>Lahmacun Hunters</td><td>Heroes of the Kebab Saloon</td><td>374</td></tr>
-    <tr class="alt"><td>Angry Meatballs</td><td>Heroes of the Kebab Saloon</td><td>41</td></tr>
-    <tr><td>Beyti Rush</td><td>Heroes of the Kebab Saloon</td><td>37</td></tr>
-    <tr class="alt"><td>Shortest Path in Adana</td><td>Heroes of the Kebab Saloon</td><td>104</td></tr>
-    <tr><td>Cut the Baklava</td><td>Heroes of the Kebab Saloon</td><td>896</td></tr>
-  </tbody>
-  </table>
-</div>
 
 </html>
