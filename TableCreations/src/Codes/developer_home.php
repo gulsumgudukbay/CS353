@@ -36,20 +36,20 @@ echo "<h2>Practice Questions</h2>";
 echo "<div class='datagrid'><table>";
 echo "<thead><tr><th>Question Name</th><th>Challenge</th><th>Submissions</th></tr></thead>";
 
-echo "<tbody>"; 
+echo "<tbody>";
 
 $sql = "SELECT Question.challenge_id, Question.question_id, Question.title FROM Question";
 $result = $db->query($sql);
 while($row = $result->fetch_assoc()) {
-  $sql2 = "SELECT Challenge.name, Challenge.challenge_id FROM Challenge WHERE Challenge.challenge_id =".$row["challenge_id"];
+  $sql2 = "SELECT Challenge.name, Challenge.challenge_id FROM Challenge WHERE Challenge.challenge_id=".$row["challenge_id"];
   $result2 = $db->query($sql2);
   $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
-  $sql3 = "SELECT count(*) FROM Submission GROUP BY question_id where question_id = ".$row["question_id"];
+  $sql3 = "SELECT question_id, count(*) AS 'cnt' FROM Submission WHERE question_id=".$row["question_id"]." GROUP BY question_id";
   $result3 = $db->query($sql3);
-  $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
+  $row3 = mysqli_fetch_assoc($result3);
 
-  echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . $row["name"]. "</td><td>" . $row["deadline"]."</td>";
+  echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . intval($row3["cnt"]). "</td>";
 }
 
 echo "</tbody></table></div>";
