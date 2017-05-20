@@ -18,26 +18,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 //GET THE USER_ID ***************
   $count = mysqli_num_rows($result);
 
+  echo "result array ".$row1["user_id"];
+
   // If result matches, table row count should be 1
 
   if($count == 1) {
-    $sql = "SELECT user_id FROM Developer WHERE user_id = $row1";
+    $sql = "SELECT user_id FROM Developer WHERE user_id =" .intval($row1["user_id"]);
     $result = mysqli_query($db,$sql);
     $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
     $devcount = mysqli_num_rows($result);
 
-    $sql = "SELECT user_id FROM Company WHERE user_id = $row1";
+    $sql = "SELECT user_id FROM Company WHERE user_id =". intval($row1["user_id"]);
     $result = mysqli_query($db,$sql);
     $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
     $compcount = mysqli_num_rows($result);
 
     if($devcount >= 1) //developer
-      header("location: developer_home.php");
+      header("location:developer_home.php");
     elseif($compcount >= 1) // company
-      header("location: company_home.php");
-    else {
-      header("location: invalidlogin.php");
-    }
+      header("location:company_home.php");
+    //else {
+    //  header("location:invalidlogin.php");
+    //}
 
   }else {
     $error = "The login name or password is invalid";
