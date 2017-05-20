@@ -163,11 +163,13 @@ public class TableCreator {
 													+ "name	varchar(40), "
 													+ "deadline date NOT NULL, "
 													+ "topic_id int NOT NULL, "
-													+ "is_active bit NOT NULL, "
+													+ "is_active BOOLEAN NOT NULL, "
 													+ "FOREIGN KEY (topic_id)  REFERENCES Topic(topic_id)) ENGINE = InnoDB;");
 
-			stmt.executeUpdate("INSERT INTO Challenge VALUES (NULL, 'Find the Dunya Lideri', '2017-02=11', 1, 1);");
-			
+			stmt.executeUpdate("INSERT INTO Challenge VALUES (NULL, 'Find the Dunya Lideri', '2017-02-11', 1, 1);");
+			stmt.executeUpdate("INSERT INTO Challenge VALUES (NULL, 'Ey Hitler!!', '2013-02-5', 1, 0);");
+			stmt.executeUpdate("INSERT INTO Challenge VALUES (NULL, 'slm trump.s', '2015-04-8', 1, 1);");
+
 			stmt.executeUpdate("CREATE TABLE DeveloperChallenge ( user_id int, "
 													+ "challenge_id int, "
 													+ "challenge_score int NOT NULL, "
@@ -184,7 +186,9 @@ public class TableCreator {
 													+ "FOREIGN KEY (challenge_id) references Challenge(challenge_id) ) ENGINE = InnoDB;");
 			
 			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'medium', 1, 'Knapsack Problem');");
-			
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'hard', 2, 'Dictator Problem');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'easy', 3, 'Trump Problem');");
+
 			stmt.executeUpdate("CREATE TABLE Position2( ident int PRIMARY KEY AUTO_INCREMENT, "
 													+ "p_name varchar(30), "
 													+ "user_id int, "
@@ -204,7 +208,9 @@ public class TableCreator {
 													+ "FOREIGN KEY (ident) REFERENCES Position2(ident)) ENGINE = InnoDB;");
 			
 			stmt.executeUpdate("INSERT INTO ChallengePosition VALUES (1, 1);");
-			
+			stmt.executeUpdate("INSERT INTO ChallengePosition VALUES (2, 1);");
+			stmt.executeUpdate("INSERT INTO ChallengePosition VALUES (3, 1);");
+
 			stmt.executeUpdate("CREATE TABLE QuestionLanguage ( language_id	int,"
 													+ "question_id int NOT NULL, "
 													+ "PRIMARY KEY (language_id, question_id),"
@@ -224,7 +230,11 @@ public class TableCreator {
 													+ "FOREIGN KEY (question_id) REFERENCES Question(question_id)) ENGINE = InnoDB;");
 
 			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 1, FLOOR(RAND()*100));");
-			
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 1, FLOOR(RAND()*100));");
+
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 2, FLOOR(RAND()*100));");
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 3, FLOOR(RAND()*100));");
+
 			stmt.executeUpdate("CREATE TABLE Experience ( company_name varchar(40), "
 													+ "start_date date, "
 													+ "end_date date, "
