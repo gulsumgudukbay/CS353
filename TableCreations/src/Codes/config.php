@@ -1,4 +1,5 @@
 <?php
+  header('Content-Type: text/html; charset=utf-8');
   define('DB_SERVER', 'dijkstra2.ug.bcc.bilkent.edu.tr');
   define('DB_USERNAME', 'gulsum.gudukbay');
   define('DB_PASSWORD', 'ibdb8y1ir');

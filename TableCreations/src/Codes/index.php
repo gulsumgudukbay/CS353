@@ -15,10 +15,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $sql = "SELECT user_id FROM User WHERE username = '$myusername' and password = '$mypassword'";
   $result = mysqli_query($db,$sql);
   $row1 = mysqli_fetch_array($result,MYSQLI_ASSOC);
-//GET THE USER_ID ***************
-  $count = mysqli_num_rows($result);
 
-  echo "result array ".$row1["user_id"];
+  $count = mysqli_num_rows($result);
 
   // If result matches, table row count should be 1
 
@@ -37,9 +35,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       header("location:developer_home.php");
     elseif($compcount >= 1) // company
       header("location:company_home.php");
-    //else {
-    //  header("location:invalidlogin.php");
-    //}
+    else {
+      header("location:invalidlogin.php");
+    }
 
   }else {
     $error = "The login name or password is invalid";
