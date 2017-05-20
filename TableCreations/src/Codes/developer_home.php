@@ -1,38 +1,58 @@
 <?php
-   include('config.php');
-   session_start();
- 	$myusername = $_SESSION['myusername'];
-	$mypassword = $_SESSION['mypassword'];
-  $myuser_id = $_SESSION['myuser_id'];
+include('config.php');
+session_start();
+$myusername = $_SESSION['myusername'];
+$mypassword = $_SESSION['mypassword'];
+$myuser_id = $_SESSION['myuser_id'];
 
-  $sql = "SELECT * FROM User WHERE user_id = $myuser_id";
-  $result = mysqli_query($db,$sql);
-  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
-  $myuser_name = $row1["user_name"];
-	echo "<h1>Welcome, {$myuser_name}!</h1>";
+$sql = "SELECT * FROM User WHERE user_id = $myuser_id";
+$result = mysqli_query($db,$sql);
+$row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$myuser_name = $row1["user_name"];
+echo "<h1>Welcome, {$myuser_name}!</h1>";
 
-  echo "<h2>Job Challenges</h2>";
-  echo "<div class="datagrid"><table>";
-  echo  "<thead><tr><th>Job Title</th><th>Company</th><th>Challenge Name</th><th>Deadline</th></tr></thead>";
-  echo "<tbody>";
-    <tr><td>Software Engineer</td><td>Bilka</td><td>Nameless Challenge</td><td>9.4.2017</td></tr>
-      <tr class="alt"><td>Data Scientist</td><td>Meteksan</td><td>Faceless Challenge</td><td>6.4.2017</td></tr>
-      <tr><td>Web Developer</td><td>Sözeri</td><td>Mercyless Ch.</td><td>5.4.2017</td></tr>
-      <tr class="alt"><td>Machine Learning Engineer</td><td>Sun Brothers</td><td>Easy one</td><td>2.4.2017</td></tr>
-      <tr><td>IT Manager</td><td>Tatlıses Çiğköfte</td><td>Are you ready</td><td>28.3.2017</td></tr>
-  echo "</tbody></table></div>";
+echo "<h2>Job Challenges</h2>";
+echo "<div class='datagrid'><table>";
+echo  "<thead><tr><th>Job Title</th><th>Company</th><th>Challenge Name</th><th>Deadline</th></tr></thead>";
+echo "<tbody>";
 
-  echo "<p><br></p>";
+$sql = "SELECT Challenge.challenge_id, Position2.user_id, Challenge.name, Challenge.deadline, Position2.ident FROM Challenge, ChallengePosition, Position2 WHERE ChallengePosition.challenge_id = Challenge.challenge_id AND ChallengePosition.ident = Position2.ident";
+$result = $db->query($sql);
+while($row = $result->fetch_assoc()) {
+  $sql2 = "SELECT p_name FROM Position2 WHERE user_id =".$row["user_id"];
+  $result2 = $db->query($sql2);
+  $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
-  echo "<h2>Practice Questions</h2>";
-  echo "<div class="datagrid"><table>";
-  echo "<thead><tr><th>Question Name</th><th>Challenge</th><th>Submissions</th></tr></thead>";
-    <tbody><tr><td>Lahmacun Hunters</td><td>Heroes of the Kebab Saloon</td><td>374</td></tr>
-      <tr class="alt"><td>Angry Meatballs</td><td>Heroes of the Kebab Saloon</td><td>41</td></tr>
-      <tr><td>Beyti Rush</td><td>Heroes of the Kebab Saloon</td><td>37</td></tr>
-      <tr class="alt"><td>Shortest Path in Adana</td><td>Heroes of the Kebab Saloon</td><td>104</td></tr>
-      <tr><td>Cut the Baklava</td><td>Heroes of the Kebab Saloon</td><td>896</td></tr>
-  echo "</tbody></table></div>";
+  $sql3 = "SELECT user_name FROM User WHERE user_id =".$row["user_id"];
+  $result3 = $db->query($sql3);
+  $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
+
+  echo "<tr> <td>" . $row2["p_name"]. "</td><td>" . $row3["user_name"]. "</td><td>" . $row["name"]. "</td><td>" . $row["deadline"]."</td>";
+}
+
+echo "</tbody></table></div><p><br></p>";
+
+echo "<h2>Practice Questions</h2>";
+echo "<div class='datagrid'><table>";
+echo "<thead><tr><th>Question Name</th><th>Challenge</th><th>Submissions</th></tr></thead>";
+
+echo "<tbody>"; 
+
+$sql = "SELECT Question.challenge_id, Question.question_id, Question.title FROM Question";
+$result = $db->query($sql);
+while($row = $result->fetch_assoc()) {
+  $sql2 = "SELECT Challenge.name, Challenge.challenge_id FROM Challenge WHERE Challenge.challenge_id =".$row["challenge_id"];
+  $result2 = $db->query($sql2);
+  $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
+
+  $sql3 = "SELECT count(*) FROM Submission GROUP BY question_id where question_id = ".$row["question_id"];
+  $result3 = $db->query($sql3);
+  $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
+
+  echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . $row["name"]. "</td><td>" . $row["deadline"]."</td>";
+}
+
+echo "</tbody></table></div>";
 
 
 
@@ -48,7 +68,7 @@ body
 
 .myp
 {
- text-align: right;
+  text-align: right;
 }
 
 .bucenter {
