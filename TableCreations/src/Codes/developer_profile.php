@@ -38,6 +38,22 @@
   $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
   $profile_school = $row1["school"];
 
+
+  if($_SERVER["REQUEST_METHOD"] == "POST")
+  {
+    if( isset($_POST["endorse"]))
+    {
+      $endorse_skill_name = $_POST["endorse"];
+      $sql = "SELECT skill_id FROM Skill WHERE skill_name = '$endorse_skill_name'";
+      $result = mysqli_query($db, $sql);
+      $endorse_skill_id = mysqli_fetch_array($result)["skill_id"];
+
+      $sql = "INSERT INTO Endorsement VALUES ($endorse_skill_id, $profile_id, $myuser_id);";
+      $result = mysqli_query($db, $sql);
+    }
+
+  }
+
   $sql = "SELECT skill_name, count(*)
           FROM Endorsement AS e, Skill AS s, DeveloperSkill AS ds
           WHERE ds.skill_id = s.skill_id
@@ -49,6 +65,7 @@
   $sql = "SELECT skill_name
           FROM Skill AS s, DeveloperSkill AS ds
           WHERE ds.skill_id = s.skill_id
+          AND ds.user_id = $profile_id
           AND ds.user_id NOT IN ( SELECT user_id FROM Endorsement as e
           WHERE e.skill_id = s.skill_id)";
   $not_endorsed_result = mysqli_query($db,$sql);
@@ -92,12 +109,22 @@
   echo '<h3>Skills</h3>';
   while($row = mysqli_fetch_array($endorsed_result))
   {
-     echo $row['skill_name'] . " [" . $row['count(*)'] . "]<br/>";
+     echo $row['skill_name'] . " [" . $row['count(*)'] . "]";
+     echo '
+     <form action="" method="post">
+         <button name="endorse" value="'.$row['skill_name'].'">Endorse</button>
+     </form><br/>
+     ';
   }
 
   while($row = mysqli_fetch_array($not_endorsed_result))
   {
      echo $row['skill_name'] . " [0]<br/>";
+     echo '
+     <form action="" method="post">
+         <button name="endorse" value="'.$row['skill_name'].'">Endorse</button>
+     </form><br/>
+     ';
   }
 ?>
 
