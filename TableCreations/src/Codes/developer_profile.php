@@ -1,4 +1,78 @@
 <?php
+  include('config.php');
+  session_start();
+
+  $myusername = $_SESSION['myusername'];
+  $mypassword = $_SESSION['mypassword'];
+  $myuser_id = $_SESSION['myuser_id'];
+
+  $developer_top_bar =
+  '
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <div class="bucenter">
+    <div id="first-div" style="text-align:left;width:50%">
+      <h1>RecruiDB</h1>
+    </div>
+
+    <div id="second-div" style="text-align:right;width:50%">
+      <img src="./dev_profile.png" style="height:64;width:64"><img>
+      <img src="./dev_stats.png" style="height:64;width:64"><img>
+      <img src="./messages.png" style="height:64;width:64"><img>
+    </div>
+
+  </div>
+  <hr/>
+  ';
+
+  $sql = "SELECT * FROM User WHERE user_id = $myuser_id";
+  $result = mysqli_query($db,$sql);
+  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $myuser_name = $row1["user_name"];
+  $myuser_biog = $row1["biography"];
+  $myuser_purl = $row1["picurl"];
+
+  $sql = "SELECT school FROM Developer WHERE user_id = $myuser_id";
+  $result = mysqli_query($db,$sql);
+  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $mydev_school = $row1["school"];
+
+  $myuser_pic_html =
+  '
+  <div id="first-div" style="text-align:left;">
+      <img src="' . $myuser_purl . '" style="height:200;width:200"><img>
+      <form style="text-align: right;" action="./create_challenge.html">
+      <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Edit picture" /></p>
+      </form>
+  </div>
+  ';
+
+  $dev_info_div =
+  '
+  <div id="second-div" style="text-align:left;">
+      <h2>'.$myuser_name.'</h2>
+      <form style="text-align: left;" action="./create_challenge.html">
+      <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="See stats!" /></p>
+      </form>
+      <p>School: <a style="font-style:italic">'. $mydev_school .'</a></p>
+      <p>' . $myuser_biog . '</p>
+  </div>
+  ';
+
+  $profile_div =
+  '
+  <div class="busol">
+    '.$myuser_pic_html.'
+
+    <div style="width:20pt;"></div>
+
+    '.$dev_info_div.'
+  </div>
+  ';
+
+  echo $developer_top_bar . "<br/>";
+  echo $profile_div;
+
+
 
 ?>
 
@@ -37,41 +111,6 @@ body
 
 .datagrid table { border-collapse: collapse; text-align: left; width: 100%; } .datagrid {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }.datagrid table td, .datagrid table th { padding: 3px 10px; }.datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #0070A8; } .datagrid table thead th:first-child { border: none; }.datagrid table tbody td { color: #00557F; border-left: 1px solid #E1EEF4;font-size: 12px;font-weight: normal; }.datagrid table tbody .alt td { background: #E1EEf4; color: #00557F; }.datagrid table tbody td:first-child { border-left: none; }.datagrid table tbody tr:last-child td { border-bottom: none; }.datagrid table tfoot td div { border-top: 1px solid #006699;background: #E1EEf4;} .datagrid table tfoot td { padding: 0; font-size: 12px } .datagrid table tfoot td div{ padding: 2px; }.datagrid table tfoot td ul { margin: 0; padding:0; list-style: none; text-align: right; }.datagrid table tfoot  li { display: inline; }.datagrid table tfoot li a { text-decoration: none; display: inline-block;  padding: 2px 8px; margin: 1px;color: #FFFFFF;border: 1px solid #006699;-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; }.datagrid table tfoot ul.active, .datagrid table tfoot ul a:hover { text-decoration: none;border-color: #00557F; color: #FFFFFF; background: none; background-color:#006699;}div.dhtmlx_window_active, div.dhx_modal_cover_dv { position: fixed !important; }
 </style>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
-  </div>
-
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./dev_profile.png" style="height:64;width:64"><img>
-    <img src="./dev_stats.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-
-</div>
-<hr/>
-
-<div class="busol">
-  <div id="first-div" style="text-align:left;">
-      <img src="./profile_pic.jpg" style="height:200;width:200"><img>
-      <form style="text-align: right;" action="./create_challenge.html">
-      <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Edit picture" /></p>
-      </form>
-  </div>
-
-  <div style="width:20pt;"></div>
-
-  <div id="second-div" style="text-align:left;">
-      <h2>Donald Trump</h2>
-      <form style="text-align: left;" action="./create_challenge.html">
-      <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="See stats!" /></p>
-      </form>
-      <p>School: <a style="font-style:italic">Ahi Evran University</a></p>
-      <p>I was born in Küçükçekmece in 1946. Currently President of the United States.</p>
-  </div>
-</div>
 
 <h3>Skills</h3>
 <p>C++, <a href=".">17</a></p>
