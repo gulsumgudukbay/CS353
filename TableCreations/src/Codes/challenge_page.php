@@ -4,6 +4,9 @@
   session_start();
   $myuser_id = $_SESSION['myuser_id'];
 
+  echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
+  echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
+
   $chid = $_GET['chid'];
   $challengeq = "SELECT * FROM Challenge where challenge_id = ".$chid;
   $result = $db->query($challengeq);
@@ -15,19 +18,7 @@
   $rowsql = mysqli_fetch_array($resultsql, MYSQLI_ASSOC);
   $positionname = $rowsql['p_name'];
 
-  echo "<div class='bucenter'>
-    <div id='first-div' style='text-align:left;width:50%'>
-      <h1>RecruiDB</h1>
-    </div>
-    <div id='second-div' style='text-align:right;width:50%'>
-      <img src='./dev_profile.png' style='height:64;width:64'><img>
-      <img src='./dev_stats.png' style='height:64;width:64'><img>
-      <img src='./messages.png' style='height:64;width:64'><img>
-    </div>
-    </div>
-    <hr/>
-
-  <div id='new_question'><h2>".$challengename."</h2>";
+  echo "<div id='new_question'><h2>".$challengename."</h2>";
     echo "<h3>Position: <i>{$positionname}</i></h3>
     <p><i>In this challenge you will answer questions for our {$positionname} opening.</i></p>";
 

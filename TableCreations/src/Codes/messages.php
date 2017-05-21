@@ -1,5 +1,28 @@
 <?php
 
+  include('config.php');
+  session_start();
+  $myuser_id = $_SESSION['myuser_id'];
+  $userid = $_GET['userid'];
+  echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
+  echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
+
+  echo "<div class='datagrid'><table>";
+  echo "<thead><tr><th>From</th><th>Message Text</th><th>Message Date</th></tr></thead>";
+
+  echo "<tbody>";
+//| msg_id | text              | msg_date            | to_id | from_id |
+
+  $sql = "SELECT * FROM Message, User WHERE Message.from_id = User.user_id AND to_id = ".$userid;
+  $result = $db->query($sql);
+  while($row = $result->fetch_assoc()) {
+    echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td></tr>";
+  }
+
+  echo "</tbody></table></div><br></br>";
+
+
+
 ?>
 
 <style>
@@ -39,19 +62,6 @@ body
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
-  </div>
-
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./dev_profile.png" style="height:64;width:64"><img>
-    <img src="./dev_stats.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-
-</div>
-<hr/>
 
 <div id="inbox">
   <h2>Your messages
