@@ -44,15 +44,15 @@
 
       $msgemail = mysqli_real_escape_string($db,$_POST['toemail']);
       $msgtext = mysqli_real_escape_string($db,$_POST['msgtext']);
-echo $msgemail." ".$msgtext;
-       $uidquery = "SELECT * FROM User WHERE email LIKE '".$msgemail."'";
-       $uidresult = mysqli_query($db, $uidquery);
-      // $uidrow = mysqli_fetch_array($uidresult);
-      //
-      // $qquery = "INSERT INTO Message VALUES(NULL, '$msgtext', NOW(), $uidrow['user_id'], $userid)";
-      // $result = $db->query($qquery);
-      // if($result) echo "Message sent successfully!";
-      // else echo "Message cannot be sent!";
+      echo $msgemail." ".$msgtext;
+      $uidquery = "SELECT * FROM User WHERE User.email LIKE '".$msgemail."';";
+      $uidresult = $db->query($uidquery);
+      $uidrow = mysqli_fetch_array($uidresult);
+
+      $qquery = "INSERT INTO Message VALUES(NULL, '$msgtext', NOW(), ".$uidrow['user_id'].", ".$userid.")";
+      $result = $db->query($qquery);
+      if($result) echo "Message sent successfully!";
+      else echo "Message cannot be sent!";
     }
   }
 
