@@ -1,5 +1,10 @@
 <?php
 
+  include('config.php');
+  session_start();
+
+  $chid = $_GET['chid'];
+  echo "HELLO ".$chid;
 ?>
 
 <style>

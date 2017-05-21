@@ -14,7 +14,7 @@ echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%
 echo "<div id='second-div' style='text-align:right;width:50%'><img src='./dev_profile.png' style='height:64;width:64'><img><img src='./dev_stats.png' style='height:64;width:64'><img><img src='./messages.png' style='height:64;width:64'><img></div></div>";
 echo "<h2>Job Challenges</h2>";
 echo "<div class='datagrid'><table>";
-echo  "<thead><tr><th>Job Title</th><th>Company</th><th>Challenge Name</th><th>Deadline</th></tr></thead>";
+echo  "<thead><tr><th>Job Title</th><th>Company</th><th>Challenge Name</th><th>Deadline</th><th>Go To Challenge!</th></tr></thead>";
 echo "<tbody>";
 
 $sql = "SELECT Challenge.challenge_id, Position2.user_id, Challenge.name, Challenge.deadline, Position2.ident FROM Challenge, ChallengePosition, Position2 WHERE ChallengePosition.challenge_id = Challenge.challenge_id AND ChallengePosition.ident = Position2.ident";
@@ -28,7 +28,7 @@ while($row = $result->fetch_assoc()) {
   $result3 = $db->query($sql3);
   $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
 
-  echo "<tr> <td>" . $row2["p_name"]. "</td><td>" . $row3["user_name"]. "</td><td>" . $row["name"]. "</td><td>" . $row["deadline"]."</td>";
+  echo "<tr><td>" . $row2["p_name"]. "</td><td>" . $row3["user_name"]. "</td><td>" . $row["name"]. "</td><td>" . $row["deadline"]."</td><td><a href='challenge_page.php?chid={$row['challenge_id']}'>CLICK</a></td></tr>";
 }
 
 echo "</tbody></table></div><p><br></p>";
@@ -194,7 +194,11 @@ body
           return false;
         }
       }
-      </script>
+      function DoNav(theUrl)
+      {
+        document.location.href = theUrl;
+      }
+    </script>
     </div>
     <div style = "margin:30px">
       <form onsubmit="return validateForm2()" action = "" method = "post" name="companysearch" id="companysearch">
