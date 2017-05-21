@@ -55,6 +55,34 @@ while($row = $result->fetch_assoc()) {
 
 echo "</tbody></table></div>";
 
+$jobsearch = mysqli_real_escape_string($db,$_POST['jobtitle']);
+$companysearch = mysqli_real_escape_string($db,$_POST['company_name']);
+$devsearch = mysqli_real_escape_string($db,$_POST['devusername']);
+
+
+echo "<p><br></p>";
+
+echo "<h2>Job Search Results For {$jobsearch}: </h2>";
+echo "<div class='datagrid'><table>";
+echo "<thead><tr><th></th><th>Challenge Name</th><th>Company Name</th></tr></thead>";
+
+echo "<tbody>";
+
+$sql = "SELECT Question.challenge_id, Question.question_id, Question.title FROM Question";
+$result = $db->query($sql);
+while($row = $result->fetch_assoc()) {
+  $sql2 = "SELECT Challenge.name, Challenge.challenge_id FROM Challenge WHERE Challenge.challenge_id=".$row["challenge_id"];
+  $result2 = $db->query($sql2);
+  $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
+
+  $sql3 = "SELECT question_id, count(*) AS 'cnt' FROM Submission WHERE question_id=".$row["question_id"]." GROUP BY question_id";
+  $result3 = $db->query($sql3);
+  $row3 = mysqli_fetch_assoc($result3);
+
+  echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . intval($row3["cnt"]). "</td>";
+}
+
+echo "</tbody></table></div>";
 
 
 
@@ -100,7 +128,58 @@ body
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 
+<div align = "left">
+  <div style = "border: solid 1px #333333; " align = "left">
+    <div style = "margin:30px">
+      <form onsubmit="return validateForm()" action = "" method = "post" name="jobsearch" id="Form">
+        <label class = "myp" >Job Search: </label><input type = "text" name = "jobtitle" class = "box"/><br /><br />
+        <input type = "submit" value = " Job Search "/><br />
+      </form>
+      <script type="text/javascript">
+      function validateForm(){
+        var jt=document.forms["jobsearch"]["jobtitle"].value;
 
+        if ((jt==null || jt=="")){
+          alert("Please fill the required field!");
+          return false;
+        }
+      }
+      </script>
+    </div>
+    <div style = "margin:30px">
+      <form onsubmit="return validateForm()" action = "" method = "post" name="companysearch" id="Form">
+        <label class = "myp" >Company Search: </label><input type = "text" name = "company_name" class = "box"/><br /><br />
+        <input type = "submit" value = " Company Search "/><br />
+      </form>
+      <script type="text/javascript">
+      function validateForm(){
+        var jt=document.forms["companysearch"]["company_name"].value;
+
+        if ((jt==null || jt=="")){
+          alert("Please fill the required field!");
+          return false;
+        }
+      }
+      </script>
+    </div>
+    <div style = "margin:30px">
+      <form onsubmit="return validateForm()" action = "" method = "post" name="devsearch" id="Form">
+        <label class = "myp" >Developer Search: </label><input type = "text" name = "devusername" class = "box"/><br /><br />
+        <input type = "submit" value = " Developer Search "/><br />
+      </form>
+      <script type="text/javascript">
+      function validateForm(){
+        var jt=document.forms["devsearch"]["devusername"].value;
+
+        if ((jt==null || jt=="")){
+          alert("Please fill the required field!");
+          return false;
+        }
+      }
+      </script>
+    </div>
+  </div>
+</div>
 
 
 </html>
