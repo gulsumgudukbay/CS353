@@ -101,7 +101,7 @@ public class TableCreator {
 													+ "'eegemen.com', 'Born on 1999');");
 
 			stmt.executeUpdate("INSERT INTO Company (user_id, company_name) "
-													+ "VALUES (LAST_INSERT_ID(), 'Middle East Technical University');");
+													+ "VALUES (LAST_INSERT_ID(), 'Apple');");
 
 			stmt.executeUpdate("CREATE TABLE Skill( skill_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "skill_name varchar(40) NOT NULL) ENGINE = InnoDB;");

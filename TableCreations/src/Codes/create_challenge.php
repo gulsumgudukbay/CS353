@@ -1,7 +1,7 @@
 <?php
 
-?>-
-
+?>
+<html>
 <style>
 body
 {
@@ -39,33 +39,4 @@ body
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
-  </div>
-
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./dev_profile.png" style="height:64;width:64"><img>
-    <img src="./dev_stats.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-
-</div>
-<hr/>
-
-<div id="new_question">
-  <h2>New Challenge</h2>
-  <h3>Challenge Title: <input type="text" value="No Title"/></h3>
-  <h3>Job Title: <input type="text" value="e.g. Software Engineer"/></h3>
-  <h3>Challenge Topic: <select name="topics">
-    <option value="algorithms">Algorithms</option>
-    <option value="saab">Saab</option>
-    <option value="fiat">Fiat</option>
-    <option value="audi">Audi</option>
-  </select></h3>
-  <h3>Challenge Definition</h3>
-  <textarea name="message_text" cols="50" rows="10"></textarea>
-  <p/>
-  <input type="submit" value="Create Challenge"/>
-
-</div>
+</html>

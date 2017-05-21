@@ -2,6 +2,7 @@
 
 ?>
 
+<html>
 <style>
 body
 {
@@ -64,3 +65,4 @@ body
   <input type="submit" value="Create Question"/>
 
 </div>
+</html>
