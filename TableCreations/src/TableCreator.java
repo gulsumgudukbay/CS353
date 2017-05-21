@@ -79,6 +79,7 @@ public class TableCreator {
 													+ "email varchar(100) NOT NULL, "
 													+ "password varchar(40) NOT NULL, "
 													+ "website varchar(100), "
+													+ "picurl varchar(100), "
 													+ "biography varchar(500) ) ENGINE = InnoDB;");
 			
 			stmt.executeUpdate("CREATE TABLE Developer( user_id int PRIMARY KEY AUTO_INCREMENT, "
@@ -89,16 +90,16 @@ public class TableCreator {
 													+ "company_name varchar(40) NOT NULL, "
 													+ "FOREIGN KEY (user_id) references User(user_id) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB;");
 
-			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, biography) "
+			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, picurl, biography) "
 													+ "VALUES (NULL, 'gulsumg', 'gulsum', 'gudukbay@gmail.com', 'pass123', "
-													+ "'gudukbay.com', 'Hello');");
+													+ "'gudukbay.com', 'https://i.ytimg.com/vi/icqDxNab3Do/maxresdefault.jpg', 'Hello');");
 			
 			stmt.executeUpdate("INSERT INTO Developer (user_id, school) "
 													+ "VALUES (LAST_INSERT_ID(), 'Bilkent University');");
 			
-			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, biography) "
+			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, picurl, biography) "
 													+ "VALUES (NULL, 'erolegemen', 'erol', 'erolegemen@metu.com', 'erol123', "
-													+ "'eegemen.com', 'Born on 1999');");
+													+ "'eegemen.com', 'https://www.askideas.com/media/19/Hamster-With-Cap-Funny-Picture.jpg', 'Born on 1999');");
 
 			stmt.executeUpdate("INSERT INTO Company (user_id, company_name) "
 													+ "VALUES (LAST_INSERT_ID(), 'Apple');");
