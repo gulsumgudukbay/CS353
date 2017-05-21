@@ -74,7 +74,7 @@ public class TableCreator {
 			stmt.execute("DROP TABLE IF EXISTS User;");
 
 			stmt.executeUpdate("CREATE TABLE User(user_id int PRIMARY KEY AUTO_INCREMENT, "
-													+ "username	varchar(40)	NOT NULL, "
+													+ "username	varchar(40)	NOT NULL UNIQUE, "
 													+ "user_name varchar(40)	NOT NULL, "
 													+ "email varchar(100) NOT NULL, "
 													+ "password varchar(40) NOT NULL, "
