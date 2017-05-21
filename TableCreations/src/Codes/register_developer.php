@@ -17,16 +17,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   $sql = "INSERT INTO User VALUES (NULL, '$uname', '$name', '$email', '$pass', '$website', '$picurl', '$bio');";
   $result = mysqli_query($db, $sql);
 
-  if( !$result)
+  if( $result == 1)
   {
-    $sql = "SELECT user_id FROM User WHERE name = '$uname');";
+    $sql = "SELECT user_id FROM User WHERE username = '$uname';";
     $result = mysqli_query($db, $sql);
-    $row1 = mysqli_fetch_array($result);
+    $row1 = mysqli_fetch_array($result)['user_id'];
 
     $sql = "INSERT INTO Developer VALUES ($row1, '$school');";
     $result = mysqli_query($db, $sql);
   }
-
 }
 
 ?>
