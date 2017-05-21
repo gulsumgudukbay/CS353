@@ -9,9 +9,11 @@ $sql = "SELECT * FROM Company WHERE user_id = $myuser_id";
 $result = mysqli_query($db,$sql);
 $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $myuser_name = $row1["company_name"];
+echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1><a href='company_home.php'>RecruiDB</a></h1></div>";
+echo "<div id='second-div' style='text-align:right;width:50%'><a href=company_info.php?compid={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
+
 echo "<h1>Welcome, {$myuser_name}!</h1>";
-echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
-echo "<div id='second-div' style='text-align:right;width:50%'><img src='./dev_profile.png' style='height:64;width:64'><img><img src='./dev_stats.png' style='height:64;width:64'><img><img src='./messages.png' style='height:64;width:64'><img></div></div>";
+
 echo "<h2>New Challenge</h2><hr/>";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -2,6 +2,9 @@
 include('config.php');
 session_start();
 
+echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1><a href='index.php'>RecruiDB</a></h1></div>";
+echo "<div id='second-div' style='text-align:right;width:50%'><img src='./dev_profile.png' style='height:64;width:64'><img src='./dev_stats.png' style='height:64;width:64'><img src='./messages.png' style='height:64;width:64'></a></div></div>";
+
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 
@@ -17,19 +20,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   $sql = "INSERT INTO User VALUES (NULL, '$uname', '$name', '$email', '$pass', '$website', '$picurl', '$bio');";
   $result = mysqli_query($db, $sql);
 
-  if( $result == 1)
-  {
-    $sql = "SELECT user_id FROM User WHERE username = '$uname';";
-    $result = mysqli_query($db, $sql);
-    $row1 = mysqli_fetch_array($result)['user_id'];
+   if( $result)
+   {
+     $sql = "SELECT * FROM User WHERE username LIKE '$uname'";
+     $result = mysqli_query($db, $sql);
+     $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+     $roww1 = $row1['user_id'];
 
-    $sql = "INSERT INTO Developer VALUES ($row1, '$school');";
-    $result = mysqli_query($db, $sql);
-  }
-}
+     $sql = "INSERT INTO Developer VALUES (".$roww1.", '$school');";
+     $result = mysqli_query($db, $sql);
+   }
+ }
 
 ?>
-
+<html>
 <style>
 body
 {
@@ -48,7 +52,6 @@ body
 }
 </style>
 
-<h1>RecruiDB</h1>
 <hr />
 <p>&nbsp;</p>
 
@@ -103,5 +106,6 @@ function validateForm(){
 <hr />
 <p>&nbsp;</p>
 <h4>&nbsp;Don't have an account?</h4>
-<p><a href="./register_developer.html">Create a developer account!</a></p>
-<p><a href="./register_company.html">Create a company account!</a></p>
+<p><a href="./register_developer.php">Create a developer account!</a></p>
+<p><a href="./register_company.php">Create a company account!</a></p>
+</html>

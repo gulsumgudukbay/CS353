@@ -2,6 +2,9 @@
 
 include('config.php');
 session_start();
+
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   // get the username and password sent from form
   $myusername = mysqli_real_escape_string($db,$_POST['username']);
