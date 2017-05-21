@@ -1,5 +1,33 @@
 <?php
+include('config.php');
+session_start();
+$myusername = $_SESSION['myusername'];
+$mypassword = $_SESSION['mypassword'];
+$myuser_id = $_SESSION['myuser_id'];
 
+$sql = "SELECT * FROM Company WHERE user_id = $myuser_id";
+$result = mysqli_query($db,$sql);
+$row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$myuser_name = $row1["company_name"];
+echo "<h1>Welcome, {$myuser_name}!</h1>";
+echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
+echo "<div id='second-div' style='text-align:right;width:50%'><img src='./dev_profile.png' style='height:64;width:64'><img><img src='./dev_stats.png' style='height:64;width:64'><img><img src='./messages.png' style='height:64;width:64'><img></div></div>";
+echo "<h2>New Challenge</h2><hr/>";
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  $questiontitle = mysqli_real_escape_string($db,$_POST['questiontitle']);
+  $difficulty = mysqli_real_escape_string($db,$_POST['difficulty']);
+  $challengequest = mysqli_real_escape_string($db,$_POST['challengequest']);
+  $insertQuestionQuery = "INSERT INTO Question VALUES (NULL, '$difficulty', '$challengequest', '$questiontitle')";
+  $insertquestionesult = mysqli_query($db, $insertQuestionQuery);
+
+
+  if($insertquestionesult == TRUE) echo "Question inserted successfully!";
+  else "Error! Question cannot be inserted";
+
+
+}
 ?>
 
 <html>
@@ -40,29 +68,40 @@ body
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
+
+<div align = "left">
+  <div style = "border: solid 1px #333333; " align = "left">
+
+    <div style = "margin:30px">
+
+      <form onsubmit="return validateForm()" action = "" method = "post" name="Form" id="Form">
+        <label class = "myp" >Question Title: </label><input type = "text" name = "questiontitle" class = "box"/><br /><br />
+        <label class = "myp" >Difficulty: </label><input type = "text" name = "difficulty" class = "box" /><br/><br />
+        <label class = "myp" >Challenge of Question: </label><input type = "text" name = "challengequest" class = "box" /><br/><br />
+        <label class = "myp" >Question Definition: </label><input type = "text" name = "definition" class = "box" /><br/><br />
+        <label class = "myp" >Question Answer: </label><input type = "text" name = "answer" class = "box" /><br/><br />
+
+
+        <input type = "submit" value = " Create Question "/><br />
+      </form>
+
+      <script type="text/javascript">
+      function validateForm(){
+        var qt=document.forms["Form"]["questiontitle"].value;
+        var dif=document.forms["Form"]["difficulty"].value;
+        var cq=document.forms["Form"]["challengequest"].value;
+        var def=document.forms["Form"]["definition"].value;
+        var ans=document.forms["Form"]["answer"].value;
+
+        if ( (qt==null || qt=="") || (dif==null || dif=="") || (cq==null || cq=="") || (def==null || def=="") || (ans==null || ans=="")){
+          alert("Please fill the required fields!");
+          return false;
+        }
+      }
+      </script>
+
+    </div>
   </div>
-
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./dev_profile.png" style="height:64;width:64"><img>
-    <img src="./dev_stats.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-
-</div>
-<hr/>
-
-<div id="new_question">
-  <h2>New Question</h2>
-  <h3>Title: <input type="text" value="No Title"/></h3>
-  <h3>Question Definition</h3>
-  <textarea name="q_def" cols="50" rows="10"></textarea>
-  <h3>Answer</h3>
-  <textarea name="q_ans" cols="50" rows="10"></textarea>
-  <p/>
-  <input type="submit" value="Create Question"/>
 
 </div>
 </html>

@@ -60,7 +60,7 @@ body
 
 .myp
 {
- text-align: right;
+  text-align: right;
 }
 
 .bucenter {
