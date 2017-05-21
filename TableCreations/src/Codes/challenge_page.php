@@ -4,7 +4,49 @@
   session_start();
 
   $chid = $_GET['chid'];
-  echo "HELLO ".$chid;
+  $challengeq = "SELECT * FROM Challenge where challenge_id = ".$chid;
+  $result = $db->query($challengeq);
+  $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $challengename = $row['name'];
+  echo "<div class='bucenter'>
+    <div id='first-div' style='text-align:left;width:50%'>
+      <h1>RecruiDB</h1>
+    </div>
+    <div id='second-div' style='text-align:right;width:50%'>
+      <img src='./dev_profile.png' style='height:64;width:64'><img>
+      <img src='./dev_stats.png' style='height:64;width:64'><img>
+      <img src='./messages.png' style='height:64;width:64'><img>
+    </div>
+    </div>
+    <hr/>
+
+  <div id='new_question'><h2>".$challengename."</h2>";
+    echo "<h3>Position: <i>Low-level Optimization Engineer</i></h3>
+    <p><i>In this challenge you will answer questions for our Low-level Optimization Engineer opening.</i></p>
+
+    <div id='ch1' style='background-color:#44BB44;width:500px'>
+      <h3>Find the Dünya Lideri</h3>
+      <p2>Find Dünya lideri in O(logn) time.</p2>
+      <hr/><hr/>
+    </div>
+
+    <div id='ch2' style='background-color:#44BB44;width:500px'>
+      <h3>Catch them all</h3>
+      <p2>Locate all enemies.</p2>
+      <hr/><hr/>
+    </div>
+
+    <div id='ch3' style='background-color:#BBBBBB;width:500px'>
+      <h3>Follow the rabbit</h3>
+      <p2>Where does he hide?</p2>
+    <hr/><hr/>
+    </div>
+
+    <p>&nbsp;</p>
+
+    <h3>Comments:</h3>";
+
+
 ?>
 
 <style>
@@ -44,46 +86,7 @@ body
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
-  </div>
 
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./dev_profile.png" style="height:64;width:64"><img>
-    <img src="./dev_stats.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-
-</div>
-<hr/>
-
-<div id="new_question">
-  <h2>Microsoft Algo Challenge</h2>
-  <h3>Position: <i>Low-level Optimization Engineer</i></h3>
-  <p><i>In this challenge you will answer questions for our Low-level Optimization Engineer opening.</i></p>
-
-  <div id="ch1" style="background-color:#44BB44;width:500px">
-    <h3>Find the Dünya Lideri</h3>
-    <p2>Find Dünya lideri in O(logn) time.</p2>
-    <hr/><hr/>
-  </div>
-
-  <div id="ch2" style="background-color:#44BB44;width:500px">
-    <h3>Catch them all</h3>
-    <p2>Locate all enemies.</p2>
-    <hr/><hr/>
-  </div>
-
-  <div id="ch3" style="background-color:#BBBBBB;width:500px">
-    <h3>Follow the rabbit</h3>
-    <p2>Where does he hide?</p2>
-  <hr/><hr/>
-  </div>
-
-  <p>&nbsp;</p>
-
-  <h3>Comments:</h3>
   <p><input type"text"/><input type="submit" value="Write Comment"/></p>
   <p><b>Mohammad Abrahimi:</b></p>
   <p>This so hard I cannot solve please help I am want this position so much</p>
