@@ -35,7 +35,7 @@ echo "</tbody></table></div><p><br></p>";
 
 echo "<h2>Practice Questions</h2>";
 echo "<div class='datagrid'><table>";
-echo "<thead><tr><th>Question Name</th><th>Challenge</th><th>Submissions</th></tr></thead>";
+echo "<thead><tr><th>Question Name</th><th>Challenge</th><th>Submissions</th><th>Go To Challenge!</th></tr></thead>";
 
 echo "<tbody>";
 
@@ -50,7 +50,7 @@ while($row = $result->fetch_assoc()) {
   $result3 = $db->query($sql3);
   $row3 = mysqli_fetch_assoc($result3);
 
-  echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . intval($row3["cnt"]). "</td>";
+  echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . intval($row3["cnt"]). "</td><td><a href='challenge_page.php?chid={$row['challenge_id']}'>CLICK</a></td></tr>";
 }
 
 echo "</tbody></table></div><br></br><br></br>";
@@ -66,7 +66,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     echo "<h2>Job Search Results For {$jobsearch}: </h2>";
     echo "<div class='datagrid'><table>";
-    echo "<thead><tr><th>Challenge Name</th><th>Company Name</th></tr></thead>";
+    echo "<thead><tr><th>Challenge Name</th><th>Company Name</th><th>Go To Challenge!</th></tr></thead>";
 
     echo "<tbody>";
     //list the challenges and company names of the challenges for position search
@@ -86,7 +86,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       $result3 = $db->query($sql3);
       $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
 
-      echo "<tr> <td>" . $row["name"]. "</td><td>" . $row3["company_name"]. "</td>";
+      echo "<tr> <td>" . $row["name"]. "</td><td>" . $row3["company_name"]. "</td><td><a href='challenge_page.php?chid={$row['challenge_id']}'>CLICK</a></td></tr>";
     }
 
     echo "</tbody></table></div>";
