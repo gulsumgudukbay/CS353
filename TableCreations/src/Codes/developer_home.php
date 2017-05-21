@@ -53,7 +53,7 @@ while($row = $result->fetch_assoc()) {
   echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . intval($row3["cnt"]). "</td><td><a href='challenge_page.php?chid={$row['challenge_id']}'>CLICK</a></td></tr>";
 }
 
-echo "</tbody></table></div><br></br><br></br>";
+echo "</tbody></table></div><br></br>";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -62,72 +62,101 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $devsearch = mysqli_real_escape_string($db,$_POST['devusername']);
   if (isset($_POST['jobsearch'])) {
 
-    echo "<p><br></p>";
 
     echo "<h2>Job Search Results For {$jobsearch}: </h2>";
-    echo "<div class='datagrid'><table>";
-    echo "<thead><tr><th>Challenge Name</th><th>Company Name</th><th>Go To Challenge!</th></tr></thead>";
 
-    echo "<tbody>";
     //list the challenges and company names of the challenges for position search
-    $selectquery = "SELECT * FROM Position2 WHERE p_name LIKE '".$jobsearch."'";
+    $selectquery = "SELECT * FROM Position2 WHERE p_name LIKE '%".$jobsearch."%'";
     $result = mysqli_query($db, $selectquery);
     $resultselect = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $identt = intval($resultselect["ident"]);
 
     $sql = "SELECT * FROM ChallengePosition NATURAL JOIN Challenge where ChallengePosition.ident = ".$identt;
     $result = $db->query($sql);
-    while($row = $result->fetch_assoc()) {
-      $sql2 = "SELECT * FROM Position2 NATURAL JOIN ChallengePosition WHERE ChallengePosition.ident=".$identt;
-      $result2 = $db->query($sql2);
-      $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
+    $count1 = mysqli_num_rows($result);
+    if ($count1 >= 1) {
+      echo "<div class='datagrid'><table>";
+      echo "<thead><tr><th>Position</th><th>Challenge Name</th><th>Company Name</th><th>Go To Challenge!</th></tr></thead>";
 
-      $sql3 = "SELECT company_name FROM Company WHERE user_id =".$row2['user_id'];
-      $result3 = $db->query($sql3);
-      $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
+      echo "<tbody>";
+      while($row = $result->fetch_assoc()) {
+        $sql2 = "SELECT * FROM Position2 NATURAL JOIN ChallengePosition WHERE ChallengePosition.ident=".$identt;
+        $result2 = $db->query($sql2);
+        $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
-      echo "<tr> <td>" . $row["name"]. "</td><td>" . $row3["company_name"]. "</td><td><a href='challenge_page.php?chid={$row['challenge_id']}'>CLICK</a></td></tr>";
+        $sql3 = "SELECT company_name FROM Company WHERE user_id =".$row2['user_id'];
+        $result3 = $db->query($sql3);
+        $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
+
+        echo "<tr> <td>" . $row2["p_name"]. "</td><td>" . $row["name"]. "</td><td>" . $row3["company_name"]. "</td><td><a href='challenge_page.php?chid={$row['challenge_id']}'>CLICK</a></td></tr>";
+      }
+
+      echo "</tbody></table></div>";
     }
-
-    echo "</tbody></table></div>";
+    else{
+      echo "Position does not exist.";
+    }
     echo "<br></br><br></br>";
 
   }
 
   if (isset($_POST['companysearch'])) {
+    echo "<p><br></p>";
 
-    $sqlcomp = "SELECT * FROM Company WHERE company_name LIKE '".$companysearch."'";
-    $resultcomp = mysqli_query($db, $sqlcomp);
-    $resultcompp = mysqli_fetch_array($resultcomp, MYSQLI_ASSOC);
+    echo "<h2>Company Search Results For {$companysearch}: </h2>";
+
+    $sqlcomp = "SELECT * FROM Company WHERE company_name LIKE '%".$companysearch."%'";
+    $resultcomp =$db->query($sqlcomp);
     $count = mysqli_num_rows($resultcomp);
     if ($count >= 1) {
-      header("Location:company_info.php?compid={$resultcompp['user_id']}");
+      echo "<div class='datagrid'><table><thead><tr><th>Company Name</th><th>Go To Company Page!</th></tr></thead><tbody>";
+
+      while($resultcompp = $resultcomp->fetch_assoc()){
+        echo "<tr> <td>".$resultcompp["company_name"]."</td><td><a href='company_info.php?compid={$resultcompp['user_id']}'>Company Page</a></td></tr>";
+      }
+      echo "</tbody></table></div>";
+
     }
     else {
       echo "Company does not exist!";
     }
+    echo "<br></br><br></br>";
 
   }
 
   if (isset($_POST['devsearch'])) {
 
-    $sqldev = "SELECT * FROM User WHERE username LIKE '".$devsearch."'";
-    $resultdev= mysqli_query($db, $sqldev);
-    $resultdevv = mysqli_fetch_array($resultdev, MYSQLI_ASSOC);
-    $count = mysqli_num_rows($resultdev);
-    if ($count >= 1) {
-      $sqldev2 = "SELECT * FROM Developer WHERE user_id=".$resultdevv["user_id"];
-      $resultdev2= mysqli_query($db, $sqldev2);
-      $resultdevv2 = mysqli_fetch_array($resultdev2, MYSQLI_ASSOC);
-      $count2 = mysqli_num_rows($resultdev2);
+    echo "<h2>Developer Search Results For {$devsearch}: </h2>";
 
-      if($count2 >= 1 ){
-        header("Location: developer_profile.php?user={$resultdevv2['user_id']}");
+    $sqldev = "SELECT * FROM User WHERE username LIKE '%".$devsearch."%'";
+    $resultdev= $db->query($sqldev);
+    $devcount = mysqli_num_rows($resultdev);
+
+    if ($devcount >= 1) { //user found
+      $index = 0;
+      while($resultdevv = $resultdev->fetch_assoc()){
+        $sqldev2 = "SELECT * FROM Developer WHERE user_id=".$resultdevv["user_id"];
+        $resultdev2= $db->query($sqldev2);;
+        $count2 = mysqli_num_rows($resultdev2);
+
+        if($count2 >= 1 ){ //user found and is a developer
+          if($index == 0)
+            echo "<div class='datagrid'><table><thead><tr><th>Developer Username</th><th>Go To Developer Profile Page!</th></tr></thead><tbody>";
+          while($resultdevv2 = $resultdev2->fetch_assoc()){
+            echo "<tr> <td>".$resultdevv["username"]."</td><td><a href='developer_profile.php?user={$resultdevv2['user_id']}'>Profile Page</a></td></tr>";
+          }
+          $index = $index + 1;
+
+          if($index+1 == $count2)
+            echo "</tbody></table></div><br></br>";
+
+        }
+        else { echo "The username or username part does not belong to a developer!<br></br>";}
+
       }
-      else { echo "The username does not belong to a developer!";}
     }
     else {
-      echo "Developer does not exist!";
+      echo "Developer does not exist!<br></br>";
     }
 
   }
@@ -178,7 +207,9 @@ body
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 
-<div align = "left">
+<div align = "left" style = "position: fixed;bottom: 0;width: 100%;" >
+  <p><br></p>
+
   <div style = "border: solid 1px #333333; " align = "left">
     <div style = "margin:30px">
       <form onsubmit="return validateForm1()" action = "" method = "post" name="jobsearch" id="jobsearch">
@@ -198,7 +229,7 @@ body
       {
         document.location.href = theUrl;
       }
-    </script>
+      </script>
     </div>
     <div style = "margin:30px">
       <form onsubmit="return validateForm2()" action = "" method = "post" name="companysearch" id="companysearch">
@@ -232,6 +263,8 @@ body
       }
       </script>
     </div>
+    <p><br></p>
+
   </div>
 </div>
 
