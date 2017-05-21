@@ -3,9 +3,28 @@
   include('config.php');
   session_start();
   $myuser_id = $_SESSION['myuser_id'];
-  $chid = $_GET['qid'];
+  $qid = $_GET['qid'];
 
-  
+  $qquery = "SELECT * FROM Question where question_id = ".$qid;
+  $result = $db->query($qquery);
+  $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $qname = $row['title'];
+
+  echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
+  echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
+  echo "<div id='solve'>
+    <h2>{$qname}</h2>
+    <p>Query all columns for all American cities in CITY with populations larger than 100000. The CountryCode for America is USA.</p>
+    <h3>Answer</h3>";
+
+  if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $qquery = "INSERT INTO Submission VALUES(NULL, NOW(), $myuser_id, $qid, FLOOR(RAND()*100))";
+    $result = $db->query($qquery);
+    if($result) echo "Submission added successfully!";
+    else echo "Submission cannot be made!";
+  }
+
 
 ?>
 
@@ -47,27 +66,28 @@
   </style>
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <div class="bucenter">
-    <div id="first-div" style="text-align:left;width:50%">
-      <h1>RecruiDB</h1>
+
+  <div style = "border: solid 1px #333333; " align = "left">
+    <div style = "margin:30px">
+      <form onsubmit="return validateForm1()" action = "" method = "post" name="solve" id="jobsearch">
+        <label class = "myp" ></label><input style="height:200px;width:300px;" type = "text" name = "answer" class = "box"/><br /><br />
+        <input type = "submit" value = " Submit Answer "name="submitanswer"/><br />
+      </form>
+      <script type="text/javascript">
+      function validateForm1(){
+        var jt=document.forms["solve"]["answer"].value;
+
+        if ((jt==null || jt=="")){
+          alert("Please fill the required field!");
+          return false;
+        }
+      }
+      </script>
     </div>
 
-    <div id="second-div" style="text-align:right;width:50%">
-      <img src="./dev_profile.png" style="height:64;width:64"><img>
-      <img src="./dev_stats.png" style="height:64;width:64"><img>
-      <img src="./messages.png" style="height:64;width:64"><img>
-    </div>
+    <p><br></p>
 
   </div>
-  <hr/>
 
-  <div id="solve">
-    <h2>Basic Select</h2>
-    <p>Query all columns for all American cities in CITY with populations larger than 100000. The CountryCode for America is USA.</p>
-    <h3>Answer</h3>
-    <textarea name="q_ans" cols="50" rows="10"></textarea>
-    <p/>
-    <input type="submit" value="Submit Answer"/>
 
-  </div>
 </html>
