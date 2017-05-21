@@ -29,19 +29,29 @@
   $sql = "SELECT * FROM User WHERE user_id = $profile_id";
   $result = mysqli_query($db,$sql);
   $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
-  $myuser_name = $row1["user_name"];
-  $myuser_biog = $row1["biography"];
-  $myuser_purl = $row1["picurl"];
+  $profile_name = $row1["user_name"];
+  $profile_biog = $row1["biography"];
+  $profile_purl = $row1["picurl"];
 
   $sql = "SELECT school FROM Developer WHERE user_id = $profile_id";
   $result = mysqli_query($db,$sql);
   $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
-  $mydev_school = $row1["school"];
+  $profile_school = $row1["school"];
 
-  $myuser_pic_html =
+  $sql = "SELECT skill_name, count(*)
+          FROM Endorsement AS e, Skill AS s, DeveloperSkill AS ds
+          WHERE ds.skill_id = s.skill_id
+          AND ds.skill_id = e.skill_id
+          AND e.to_id = $profile_id";
+  $result = mysqli_query($db,$sql);
+  $rows = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+
+
+  $profile_pic_html =
   '
   <div id="first-div" style="text-align:left;">
-      <img src="' . $myuser_purl . '" style="height:200;width:200"><img>
+      <img src="' . $profile_purl . '" style="height:200;width:200"><img>
       <form style="text-align: right;" action="./create_challenge.html">
       <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Edit picture" /></p>
       </form>
@@ -51,19 +61,19 @@
   $dev_info_div =
   '
   <div id="second-div" style="text-align:left;">
-      <h2>'.$myuser_name.'</h2>
+      <h2>'.$profile_name.'</h2>
       <form style="text-align: left;" action="./create_challenge.html">
       <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="See stats!" /></p>
       </form>
-      <p>School: <a style="font-style:italic">'. $mydev_school .'</a></p>
-      <p>' . $myuser_biog . '</p>
+      <p>School: <a style="font-style:italic">'. $profile_school .'</a></p>
+      <p>' . $profile_biog . '</p>
   </div>
   ';
 
   $profile_div =
   '
   <div class="busol">
-    '.$myuser_pic_html.'
+    '.$profile_pic_html.'
 
     <div style="width:20pt;"></div>
 
@@ -74,6 +84,8 @@
   echo $developer_top_bar . "<br/>";
   echo $profile_div;
 
+
+  echo "rows". $rows['skill_name'];
 ?>
 
 <style>
