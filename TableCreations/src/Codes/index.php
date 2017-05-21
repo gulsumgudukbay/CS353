@@ -57,13 +57,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       header("location:company_home.php");
 
     else { // invalid login!
-      header("location:invalidlogin.php");
+      header("location:badlogin.php");
     }
 
   }else { // invalid login
     $error = "The login name or password is invalid";
    echo $error;
-    header("location:invalidlogin.php");
+    header("location:badlogin.php");
   }
 }
 ?>

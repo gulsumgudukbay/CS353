@@ -20,16 +20,6 @@
   </div>
   <hr/>
   ';
-  $sql = "SELECT * FROM User WHERE user_id = $profile_id";
-  $result = mysqli_query($db,$sql);
-  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
-  $profile_name = $row1["user_name"];
-  $profile_biog = $row1["biography"];
-  $profile_purl = $row1["picurl"];
-  $sql = "SELECT school FROM Developer WHERE user_id = $profile_id";
-  $result = mysqli_query($db,$sql);
-  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
-  $profile_school = $row1["school"];
   if($_SERVER["REQUEST_METHOD"] == "POST")
   {
     if( isset($_POST["endorse"]))
@@ -43,7 +33,7 @@
     }
     if( isset($_POST["add_skill"]))
     {
-      if( $_POST["add_skill"] == 1)
+      if( $_POST["add_skill"] != 0)
       {
         $endorse_skill_name = $_POST["skill_name"];
         $sql = "SELECT * FROM Skill WHERE skill_name = '$endorse_skill_name'";
@@ -68,7 +58,31 @@
         }
       }
     }
+
+    if( isset($_POST["editpic"]))
+    {
+      if( $_POST["editpic"] != 0)
+      {
+        $picurl = $_POST["picurl"];
+        $sql = "UPDATE User SET picurl = '$picurl' WHERE user_id = '$myuser_id'";
+        $result = mysqli_query($db, $sql);
+      }
+    }
+
   }
+
+  $sql = "SELECT * FROM User WHERE user_id = $profile_id";
+  $result = mysqli_query($db,$sql);
+  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $profile_name = $row1["user_name"];
+  $profile_biog = $row1["biography"];
+  $profile_purl = $row1["picurl"];
+  $sql = "SELECT school FROM Developer WHERE user_id = $profile_id";
+  $result = mysqli_query($db,$sql);
+  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $profile_school = $row1["school"];
+
+
   $sql = "SELECT skill_name, count(*)
           FROM Endorsement AS e, Skill AS s, DeveloperSkill AS ds
           WHERE ds.skill_id = s.skill_id
@@ -84,13 +98,25 @@
           AND ds.user_id NOT IN ( SELECT user_id FROM Endorsement as e
           WHERE e.to_id = $profile_id AND e.skill_id = s.skill_id)";
   $not_endorsed_result = mysqli_query($db,$sql);
+
+
+  $edit_pic_html = "";
+  if( $myuser_id == $profile_id)
+  {
+    $edit_pic_html = '
+    <form style="text-align:right;" method="post" action="./developer_profile.php?user='.$profile_id.'">
+    <p><input style="text;width:200" name="picurl" value="http://"/></p>
+    <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span>
+    <button name="editpic" value="1">Edit picture</button></p>
+    </form>
+    ';
+  }
+
   $profile_pic_html =
   '
   <div id="first-div" style="text-align:left;">
       <img src="' . $profile_purl . '" style="height:200;width:200"><img>
-      <form style="text-align: right;" action="./create_challenge.html">
-      <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Edit picture" /></p>
-      </form>
+      '.$edit_pic_html.'
   </div>
   ';
   $dev_info_div =
@@ -133,12 +159,12 @@
      </form><br/>
      ';
   }
+
   if( $myuser_id == $profile_id)
   {
     echo '
-    <form name="Form" style="text-align: center;" onsubmit="" action="" method = "post">
-      <p class="myp">New Skill: <input name="skill_name" type="text" /></p>
-      <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"><br /></span> </span>
+    <form name="Form" style="text-align: left;" onsubmit="" action="" method = "post">
+      <p>New Skill: <input name="skill_name" type="text" /></p>
       <button name="add_skill" value="1">Add Skill!</button></p>
     </form>
     ';
