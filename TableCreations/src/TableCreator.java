@@ -115,7 +115,7 @@ public class TableCreator {
 													+ "from_id int, "
 													+ "PRIMARY KEY (skill_id, to_id, from_id), "
 													+ "FOREIGN KEY (skill_id) references Skill(skill_id), "
-													+ "FOREIGN KEY (to_id) references User(user_id), "
+													+ "FOREIGN KEY (to_id) references Developer(user_id), "
 													+ "FOREIGN KEY (from_id) references User(user_id))  ENGINE = InnoDB;");
 
 			stmt.executeUpdate("CREATE TABLE DeveloperSkill (skill_id int, "
@@ -123,19 +123,15 @@ public class TableCreator {
 													+ "PRIMARY KEY (skill_id, user_id), "
 													+ "FOREIGN KEY (skill_id) references Skill(skill_id), "
 													+ "FOREIGN KEY (user_id) references Developer(user_id))  ENGINE = InnoDB;");
+			
 			stmt.executeUpdate("INSERT INTO DeveloperSkill VALUES (1, 1);");
 			stmt.executeUpdate("INSERT INTO DeveloperSkill VALUES (2, 1);");
 			stmt.executeUpdate("INSERT INTO DeveloperSkill VALUES (3, 1);");
-			stmt.executeUpdate("INSERT INTO DeveloperSkill VALUES (2, 2);");
-			stmt.executeUpdate("INSERT INTO DeveloperSkill VALUES (3, 2);");
 
 			stmt.executeUpdate("INSERT INTO Endorsement VALUES (1, 1, 2);");
-			stmt.executeUpdate("INSERT INTO Endorsement VALUES (2, 2, 1);");
+			stmt.executeUpdate("INSERT INTO Endorsement VALUES (2, 1, 1);");
 			stmt.executeUpdate("INSERT INTO Endorsement VALUES (3, 1, 2);");
-			stmt.executeUpdate("INSERT INTO Endorsement VALUES (3, 2, 1);");
-
-
-
+			stmt.executeUpdate("INSERT INTO Endorsement VALUES (3, 1, 1);");
 
 
 			stmt.executeUpdate("CREATE TABLE Message ( msg_id int PRIMARY KEY AUTO_INCREMENT, "

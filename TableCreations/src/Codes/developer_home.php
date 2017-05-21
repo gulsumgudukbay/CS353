@@ -67,8 +67,13 @@ echo "<div class='datagrid'><table>";
 echo "<thead><tr><th></th><th>Challenge Name</th><th>Company Name</th></tr></thead>";
 
 echo "<tbody>";
+//list the challenges and company names of the challenges for position search
+$selectquery = "SELECT ident FROM Position2 WHERE p_name = ".$jobsearch;
+$resultselect = mysqli_fetch_array($selectquery, MYSQLI_ASSOC);
+$identt = intval($resultselect["ident"]);
+echo "identt = ".$identt;
 
-$sql = "SELECT Position2.p_name, Position2.user_id, Position2.ident,  FROM Position2, ;
+$sql = "SELECT * FROM ChallengePosition NATURAL JOIN Challenge where ident = {$identt}";
 $result = $db->query($sql);
 while($row = $result->fetch_assoc()) {
   $sql2 = "SELECT Challenge.name, Challenge.challenge_id FROM Challenge WHERE Challenge.challenge_id=".$row["challenge_id"];
@@ -79,7 +84,7 @@ while($row = $result->fetch_assoc()) {
   $result3 = $db->query($sql3);
   $row3 = mysqli_fetch_assoc($result3);
 
-  echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . intval($row3["cnt"]). "</td>";
+  echo "<tr> <td>" . $row["name"]. "</td><td>" . $row2["company_name"]. "</td>";
 }
 
 echo "</tbody></table></div>";
