@@ -7,11 +7,11 @@
   echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
   echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
 
+  echo "<h2>Inbox</h2>";
   echo "<div class='datagrid'><table>";
   echo "<thead><tr><th>From</th><th>Message Text</th><th>Message Date</th></tr></thead>";
 
   echo "<tbody>";
-//| msg_id | text              | msg_date            | to_id | from_id |
 
   $sql = "SELECT * FROM Message, User WHERE Message.from_id = User.user_id AND to_id = ".$userid;
   $result = $db->query($sql);
@@ -22,6 +22,39 @@
   echo "</tbody></table></div><br></br>";
 
 
+  echo "<h2>Outbox</h2>";
+  echo "<div class='datagrid'><table>";
+  echo "<thead><tr><th>To</th><th>Message Text</th><th>Message Date</th></tr></thead>";
+
+  echo "<tbody>";
+
+  $sql = "SELECT * FROM Message, User WHERE Message.to_id = User.user_id AND from_id = ".$userid;
+  $result = $db->query($sql);
+  while($row = $result->fetch_assoc()) {
+    echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td></tr>";
+  }
+
+  echo "</tbody></table></div><br></br>";
+
+
+  if($_SERVER["REQUEST_METHOD"] == "POST") {
+//| msg_id | text              | msg_date            | to_id | from_id |
+
+    if( isset($_POST['sendmsg'])) {
+
+      $msgemail = mysqli_real_escape_string($db,$_POST['toemail']);
+      $msgtext = mysqli_real_escape_string($db,$_POST['msgtext']);
+echo $msgemail." ".$msgtext;
+       $uidquery = "SELECT * FROM User WHERE email LIKE '".$msgemail."'";
+       $uidresult = mysqli_query($db, $uidquery);
+      // $uidrow = mysqli_fetch_array($uidresult);
+      //
+      // $qquery = "INSERT INTO Message VALUES(NULL, '$msgtext', NOW(), $uidrow['user_id'], $userid)";
+      // $result = $db->query($qquery);
+      // if($result) echo "Message sent successfully!";
+      // else echo "Message cannot be sent!";
+    }
+  }
 
 ?>
 
@@ -63,37 +96,26 @@ body
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-<div id="inbox">
-  <h2>Your messages
-  <input type="submit" value="New Message"/></h2>
-  <div id="message1" style="background-color:#FFC73C;width:500px">
-    <h3>Donald Trumb</h3>
-    <p2>About the wall we are building.</p2>
-    <hr/><hr/>
+<div style = "border: solid 1px #333333; " align = "left">
+  <div style = "margin:30px">
+    <form onsubmit="return validateForm1()" action = "" method = "post" name="newmessage" id="jobsearch">
+      <label class = "myp" >To Email: </label><input type = "text" name = "toemail" class = "box"/><br />
+      <label class = "myp" >Message Text: </label><input style="height:200px;width:300px;" type = "text" name = "msgtext" class = "box"/><br /><br />
+      <input type = "submit" value = " Send Message "name="sendmsg"/><br />
+    </form>
+    <script type="text/javascript">
+    function validateForm1(){
+      var te=document.forms["newmessage"]["toemail"].value;
+      var mt=document.forms["newmessage"]["msgtext"].value;
+
+      if ((te==null || te=="") || (mt==null || mt=="")){
+        alert("Please fill the required fields!");
+        return false;
+      }
+    }
+    </script>
   </div>
 
-  <div id="message2" style="background-color:#FFC73C;width:500px">
-    <h3>Cem Yılmaz</h3>
-    <p2>Neyk?</p2>
-    <hr/><hr/>
-  </div>
-
-  <div id="message3" style="background-color:#BABABA;width:500px">
-    <h3>Dünya Lideri</h3>
-    <p2>Değerli kardeşlerim</p2>
-    <hr/><hr/>
-  </div>
-
-  <div id="message4" style="background-color:#BABABA;width:500px">
-    <h3>Dünya Lideri</h3>
-    <p2>Sizden öğrenecek değiliz</p2>
-    <hr/><hr/>
-  </div>
-
-  <div id="message5" style="background-color:#BABABA;width:500px">
-    <h3>Dünya Lideri</h3>
-    <p2>Bunlar...</p2>
-    <hr/><hr/>
-  </div>
+  <p><br></p>
 
 </div>
