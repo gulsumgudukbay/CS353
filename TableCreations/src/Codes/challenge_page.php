@@ -8,6 +8,12 @@
   $result = $db->query($challengeq);
   $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
   $challengename = $row['name'];
+
+  $sql = "SELECT * FROM ChallengePosition NATURAL JOIN Position2 WHERE challenge_id = ".$chid;
+  $resultsql = $db->query($sql);
+  $rowsql = mysqli_fetch_array($resultsql, MYSQLI_ASSOC);
+  $positionname = $rowsql['p_name'];
+
   echo "<div class='bucenter'>
     <div id='first-div' style='text-align:left;width:50%'>
       <h1>RecruiDB</h1>
@@ -21,30 +27,21 @@
     <hr/>
 
   <div id='new_question'><h2>".$challengename."</h2>";
-    echo "<h3>Position: <i>Low-level Optimization Engineer</i></h3>
-    <p><i>In this challenge you will answer questions for our Low-level Optimization Engineer opening.</i></p>
+    echo "<h3>Position: <i>{$positionname}</i></h3>
+    <p><i>In this challenge you will answer questions for our {$positionname} opening.</i></p>";
 
-    <div id='ch1' style='background-color:#44BB44;width:500px'>
-      <h3>Find the Dünya Lideri</h3>
-      <p2>Find Dünya lideri in O(logn) time.</p2>
-      <hr/><hr/>
-    </div>
+    echo "<div class='datagrid'><table>";
+    echo "<thead><tr><th>Question Title</th><th>Difficulty</th><th>Solve!</th></tr></thead>";
 
-    <div id='ch2' style='background-color:#44BB44;width:500px'>
-      <h3>Catch them all</h3>
-      <p2>Locate all enemies.</p2>
-      <hr/><hr/>
-    </div>
+    echo "<tbody>";
 
-    <div id='ch3' style='background-color:#BBBBBB;width:500px'>
-      <h3>Follow the rabbit</h3>
-      <p2>Where does he hide?</p2>
-    <hr/><hr/>
-    </div>
+    $sql = "SELECT * FROM Question WHERE challenge_id = ".$chid;
+    $result = $db->query($sql);
+    while($row = $result->fetch_assoc()) {
+      echo "<tr> <td>" . $row["title"]. "</td><td>" . $row["difficulty"]. "</td><td><a href='solve_question.php?qid={$row['question_id']}'>Solve!</a></td></tr>";
+    }
 
-    <p>&nbsp;</p>
-
-    <h3>Comments:</h3>";
+    echo "</tbody></table></div><br></br><br></br><p>&nbsp;</p><h3>Comments:</h3>";
 
 
 ?>
