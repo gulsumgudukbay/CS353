@@ -238,7 +238,7 @@ public class TableCreator {
 													+ "sub_date timestamp NOT NULL, "
 													+ "user_id int NOT NULL, "
 													+ "question_id int NOT NULL, "
-													+ "sub_score int NOT NULL,"
+			 										+ "sub_score int NOT NULL,"
 													+ "PRIMARY KEY (sub_id, user_id, question_id),"
 													+ "FOREIGN KEY (user_id) REFERENCES User(user_id),"
 													+ "FOREIGN KEY (question_id) REFERENCES Question(question_id)) ENGINE = InnoDB;");
