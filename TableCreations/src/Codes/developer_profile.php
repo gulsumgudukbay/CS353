@@ -1,4 +1,20 @@
 <?php
+  include('config.php');
+  session_start();
+
+  $myusername = $_SESSION['myusername'];
+  $mypassword = $_SESSION['mypassword'];
+  $myuser_id = $_SESSION['myuser_id'];
+
+  $sql = "SELECT * FROM User WHERE user_id = $myuser_id";
+  $result = mysqli_query($db,$sql);
+  $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $myuser_name = $row1["user_name"];
+  $myuser_biog = $row1["biography"];
+
+  echo $myuser_name . "<br/>";
+  echo $myuser_biog;
+
 
 ?>
 
