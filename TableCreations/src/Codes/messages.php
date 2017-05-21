@@ -7,16 +7,31 @@
   echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
   echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
 
+  //MESSAGE DELETE
+  if(isset($_GET["delete"])){
+
+    $getURI = $_GET["delete"];
+    $getURI = intval($getURI);
+
+    $deletequery = "DELETE FROM Message WHERE msg_id=".$getURI;
+    $deletequeryresult = mysqli_query($db, $deletequery);
+
+    if($deletequeryresult) echo "The message is deleted successfully!";
+    else echo "The message cannot be deleted!";
+
+  }
+
+
   echo "<h2>Inbox</h2>";
   echo "<div class='datagrid'><table>";
-  echo "<thead><tr><th>From</th><th>Message Text</th><th>Message Date</th></tr></thead>";
+  echo "<thead><tr><th>From</th><th>Message Text</th><th>Message Date</th><th>Delete Message</th></tr></thead>";
 
   echo "<tbody>";
 
   $sql = "SELECT * FROM Message, User WHERE Message.from_id = User.user_id AND to_id = ".$userid;
   $result = $db->query($sql);
   while($row = $result->fetch_assoc()) {
-    echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td></tr>";
+    echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td><td><a href = 'messages.php?userid={$userid}&delete={$row['msg_id']}'><input id='delbtn' type='submit' value='Delete'/></a></td></tr>";
   }
 
   echo "</tbody></table></div><br></br>";
@@ -24,14 +39,14 @@
 
   echo "<h2>Outbox</h2>";
   echo "<div class='datagrid'><table>";
-  echo "<thead><tr><th>To</th><th>Message Text</th><th>Message Date</th></tr></thead>";
+  echo "<thead><tr><th>To</th><th>Message Text</th><th>Message Date</th><th>Delete Message</th></tr></thead>";
 
   echo "<tbody>";
 
   $sql = "SELECT * FROM Message, User WHERE Message.to_id = User.user_id AND from_id = ".$userid;
   $result = $db->query($sql);
   while($row = $result->fetch_assoc()) {
-    echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td></tr>";
+    echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td><td><a href = 'messages.php?userid={$userid}&delete={$row['msg_id']}'><input id='delbtn' type='submit' value='Delete'/></a></td></tr>";
   }
 
   echo "</tbody></table></div><br></br>";
