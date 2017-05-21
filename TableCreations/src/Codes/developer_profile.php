@@ -6,6 +6,8 @@
   $mypassword = $_SESSION['mypassword'];
   $myuser_id = $_SESSION['myuser_id'];
 
+  $profile_id = $_GET['user'];
+
   $developer_top_bar =
   '
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -24,14 +26,14 @@
   <hr/>
   ';
 
-  $sql = "SELECT * FROM User WHERE user_id = $myuser_id";
+  $sql = "SELECT * FROM User WHERE user_id = $profile_id";
   $result = mysqli_query($db,$sql);
   $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
   $myuser_name = $row1["user_name"];
   $myuser_biog = $row1["biography"];
   $myuser_purl = $row1["picurl"];
 
-  $sql = "SELECT school FROM Developer WHERE user_id = $myuser_id";
+  $sql = "SELECT school FROM Developer WHERE user_id = $profile_id";
   $result = mysqli_query($db,$sql);
   $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
   $mydev_school = $row1["school"];
@@ -71,8 +73,6 @@
 
   echo $developer_top_bar . "<br/>";
   echo $profile_div;
-
-
 
 ?>
 
