@@ -98,7 +98,7 @@ public class TableCreator {
 													+ "VALUES (LAST_INSERT_ID(), 'Bilkent University');");
 
 			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, picurl, biography) "
-													+ "VALUES (NULL, 'erolegemen', 'erol', 'erolegemen@metu.com', 'erol123', "
+													+ "VALUES (NULL, 'erolegemen', 'Apple', 'erolegemen@metu.com', 'erol123', "
 													+ "'eegemen.com', 'https://www.askideas.com/media/19/Hamster-With-Cap-Funny-Picture.jpg', 'Born on 1999');");
 
 			stmt.executeUpdate("INSERT INTO Company (user_id, company_name) "
