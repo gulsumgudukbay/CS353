@@ -1,5 +1,44 @@
 <?php
 
+include('config.php');
+session_start();
+$myusername = $_SESSION['myusername'];
+$mypassword = $_SESSION['mypassword'];
+$myuser_id = $_SESSION['myuser_id'];
+
+$sql = "SELECT * FROM Company WHERE user_id = $myuser_id";
+$result = mysqli_query($db,$sql);
+$row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$myuser_name = $row1["company_name"];
+echo "<h1>Welcome, {$myuser_name}!</h1>";
+echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1>RecruiDB</h1></div>";
+echo "<div id='second-div' style='text-align:right;width:50%'><img src='./dev_profile.png' style='height:64;width:64'><img><img src='./dev_stats.png' style='height:64;width:64'><img><img src='./messages.png' style='height:64;width:64'><img></div></div>";
+echo "<h2>New Challenge</h2><hr/>";
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+  $challengetitle = mysqli_real_escape_string($db,$_POST['challengetitle']);
+  $jobtitle = mysqli_real_escape_string($db,$_POST['jobtitle']);
+  $challengetopic = mysqli_real_escape_string($db,$_POST['challengetopic']);
+  $challengedeadline = mysqli_real_escape_string($db,$_POST['challengedeadline']);
+
+  $insertChalengeQuery = "INSERT INTO Challenge VALUES (NULL, '$challengetitle', '$challengedeadline', '$challengetopic', 1)";
+  $insertchallengeresult = mysqli_query($db, $insertChalengeQuery);
+  $lastinsertid = mysql_insert_id();
+  if($insertchallengeresult == TRUE) echo "inserted!";
+  else echo "error";
+  $searchJobTitle = "SELECT * FROM Position2 WHERE p_name = ".$jobtitle;
+  $searchJobTitleResult = mysqli_query($db, $searchJobTitle);
+  $count = mysqli_num_rows($searchJobTitleResult);
+
+  if($count <= 0){
+    $insertPositionQuery = "INSERT INTO Position2 VALUES (NULL, $jobtitle, $myuser_id)";
+    $insertPositionResult = mysqli_query($db, $insertPositionQuery);
+  }
+
+
+
+}
+
 ?>
 <html>
 <style>
@@ -39,4 +78,43 @@ body
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+<div align = "left">
+  <div style = "border: solid 1px #333333; " align = "left">
+
+    <div style = "margin:30px">
+
+      <form onsubmit="return validateForm()" action = "" method = "post" name="Form" id="Form">
+        <label class = "myp" >Challenge Title: </label><input type = "text" name = "challengetitle" class = "box"/><br /><br />
+        <label class = "myp" >Job Title: </label><input type = "text" name = "jobtitle" class = "box" /><br/><br />
+        <label class = "myp" >Challenge Topic: </label><input type = "text" name = "challengetopic" class = "box" /><br/><br />
+        <label class = "myp" >Challenge Deadline: </label><input type = "text" name = "challengedeadline" class = "box" /><br/><br />
+        <label class = "myp" >Challenge Definition: </label><input type = "text" name = "challengedefinition" class = "box" /><br/><br />
+
+
+        <input type = "submit" value = " Create Challenge "/><br />
+      </form>
+
+      <script type="text/javascript">
+      function validateForm(){
+        var ct=document.forms["Form"]["challengetitle"].value;
+        var jt=document.forms["Form"]["jobtitle"].value;
+        var ctop=document.forms["Form"]["challengetopic"].value;
+        var cd=document.forms["Form"]["challengedeadline"].value;
+        var cdef=document.forms["Form"]["challengedefinition"].value;
+
+        if ((ct==null || ct=="") || (jt==null || jt=="") || (ctop==null || ctop=="") || (cdef==null || cdef=="")){
+          alert("Please fill the required fields!");
+          return false;
+        }
+      }
+      </script>
+
+    </div>
+  </div>
+
+</div>
+
+
 </html>
