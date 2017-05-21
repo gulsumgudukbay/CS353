@@ -11,9 +11,22 @@
   $row1 = mysqli_fetch_array($result, MYSQLI_ASSOC);
   $myuser_name = $row1["user_name"];
   $myuser_biog = $row1["biography"];
+  $myuser_purl = $row1["picurl"];
+
+  $myuser_pic_html =
+  '
+  <div id="first-div" style="text-align:left;">
+      <img src="' . $myuser_purl . '" style="height:200;width:200"><img>
+      <form style="text-align: right;" action="./create_challenge.html">
+      <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Edit picture" /></p>
+      </form>
+  </div>
+  ';
 
   echo $myuser_name . "<br/>";
-  echo $myuser_biog;
+  echo $myuser_biog . "<br/>";
+  echo $myuser_pic_html . "<br/>";
+
 
 
 ?>
