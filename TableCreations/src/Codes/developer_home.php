@@ -53,43 +53,88 @@ while($row = $result->fetch_assoc()) {
   echo "<tr> <td>" . $row["title"]. "</td><td>" . $row2["name"]. "</td><td>" . intval($row3["cnt"]). "</td>";
 }
 
-echo "</tbody></table></div>";
+echo "</tbody></table></div><br></br><br></br>";
 
-$jobsearch = mysqli_real_escape_string($db,$_POST['jobtitle']);
-$companysearch = mysqli_real_escape_string($db,$_POST['company_name']);
-$devsearch = mysqli_real_escape_string($db,$_POST['devusername']);
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  $jobsearch = mysqli_real_escape_string($db,$_POST['jobtitle']);
+  $companysearch = mysqli_real_escape_string($db,$_POST['company_name']);
+  $devsearch = mysqli_real_escape_string($db,$_POST['devusername']);
+  if (isset($_POST['jobsearch'])) {
+
+    echo "<p><br></p>";
+
+    echo "<h2>Job Search Results For {$jobsearch}: </h2>";
+    echo "<div class='datagrid'><table>";
+    echo "<thead><tr><th>Challenge Name</th><th>Company Name</th></tr></thead>";
+
+    echo "<tbody>";
+    //list the challenges and company names of the challenges for position search
+    $selectquery = "SELECT * FROM Position2 WHERE p_name LIKE '".$jobsearch."'";
+    $result = mysqli_query($db, $selectquery);
+    $resultselect = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $identt = intval($resultselect["ident"]);
+
+    $sql = "SELECT * FROM ChallengePosition NATURAL JOIN Challenge where ChallengePosition.ident = ".$identt;
+    $result = $db->query($sql);
+    while($row = $result->fetch_assoc()) {
+      $sql2 = "SELECT * FROM Position2 NATURAL JOIN ChallengePosition WHERE ChallengePosition.ident=".$identt;
+      $result2 = $db->query($sql2);
+      $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
+
+      $sql3 = "SELECT company_name FROM Company WHERE user_id =".$row2['user_id'];
+      $result3 = $db->query($sql3);
+      $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
+
+      echo "<tr> <td>" . $row["name"]. "</td><td>" . $row3["company_name"]. "</td>";
+    }
+
+    echo "</tbody></table></div>";
+    echo "<br></br><br></br>";
+
+  }
+
+  if (isset($_POST['companysearch'])) {
+
+    $sqlcomp = "SELECT * FROM Company WHERE company_name LIKE '".$companysearch."'";
+    $resultcomp = mysqli_query($db, $sqlcomp);
+    $resultcompp = mysqli_fetch_array($resultcomp, MYSQLI_ASSOC);
+    $count = mysqli_num_rows($resultcomp);
+    if ($count >= 1) {
+      header("Location:company_info.php?compid={$resultcompp['user_id']}");
+    }
+    else {
+      echo "Company does not exist!";
+    }
+
+  }
+
+  if (isset($_POST['devsearch'])) {
+
+    $sqldev = "SELECT * FROM User WHERE username LIKE '".$devsearch."'";
+    $resultdev= mysqli_query($db, $sqldev);
+    $resultdevv = mysqli_fetch_array($resultdev, MYSQLI_ASSOC);
+    $count = mysqli_num_rows($resultdev);
+    if ($count >= 1) {
+      $sqldev2 = "SELECT * FROM Developer WHERE user_id=".$resultdevv["user_id"];
+      $resultdev2= mysqli_query($db, $sqldev2);
+      $resultdevv2 = mysqli_fetch_array($resultdev2, MYSQLI_ASSOC);
+      $count2 = mysqli_num_rows($resultdev2);
+
+      if($count2 >= 1 ){
+        header("Location: developer_profile.php?user={$resultdevv2['user_id']}");
+      }
+      else { echo "The username does not belong to a developer!";}
+    }
+    else {
+      echo "Developer does not exist!";
+    }
+
+  }
 
 
-echo "<p><br></p>";
 
-echo "<h2>Job Search Results For {$jobsearch}: </h2>";
-echo "<div class='datagrid'><table>";
-echo "<thead><tr><th></th><th>Challenge Name</th><th>Company Name</th></tr></thead>";
-
-echo "<tbody>";
-//list the challenges and company names of the challenges for position search
-$selectquery = "SELECT ident FROM Position2 WHERE p_name = ".$jobsearch;
-$resultselect = mysqli_fetch_array($selectquery, MYSQLI_ASSOC);
-$identt = intval($resultselect["ident"]);
-echo "identt = ".$identt;
-
-$sql = "SELECT * FROM ChallengePosition NATURAL JOIN Challenge where ident = {$identt}";
-$result = $db->query($sql);
-while($row = $result->fetch_assoc()) {
-  $sql2 = "SELECT Challenge.name, Challenge.challenge_id FROM Challenge WHERE Challenge.challenge_id=".$row["challenge_id"];
-  $result2 = $db->query($sql2);
-  $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
-
-  $sql3 = "SELECT question_id, count(*) AS 'cnt' FROM Submission WHERE question_id=".$row["question_id"]." GROUP BY question_id";
-  $result3 = $db->query($sql3);
-  $row3 = mysqli_fetch_assoc($result3);
-
-  echo "<tr> <td>" . $row["name"]. "</td><td>" . $row2["company_name"]. "</td>";
 }
-
-echo "</tbody></table></div>";
-
-
 
 ?>
 <html>
@@ -136,12 +181,12 @@ body
 <div align = "left">
   <div style = "border: solid 1px #333333; " align = "left">
     <div style = "margin:30px">
-      <form onsubmit="return validateForm()" action = "" method = "post" name="jobsearch" id="Form">
+      <form onsubmit="return validateForm1()" action = "" method = "post" name="jobsearch" id="jobsearch">
         <label class = "myp" >Job Search: </label><input type = "text" name = "jobtitle" class = "box"/><br /><br />
-        <input type = "submit" value = " Job Search "/><br />
+        <input type = "submit" value = " Job Search "name="jobsearch"/><br />
       </form>
       <script type="text/javascript">
-      function validateForm(){
+      function validateForm1(){
         var jt=document.forms["jobsearch"]["jobtitle"].value;
 
         if ((jt==null || jt=="")){
@@ -152,12 +197,12 @@ body
       </script>
     </div>
     <div style = "margin:30px">
-      <form onsubmit="return validateForm()" action = "" method = "post" name="companysearch" id="Form">
+      <form onsubmit="return validateForm2()" action = "" method = "post" name="companysearch" id="companysearch">
         <label class = "myp" >Company Search: </label><input type = "text" name = "company_name" class = "box"/><br /><br />
-        <input type = "submit" value = " Company Search "/><br />
+        <input type = "submit" value = " Company Search " name="companysearch"/><br />
       </form>
       <script type="text/javascript">
-      function validateForm(){
+      function validateForm2(){
         var jt=document.forms["companysearch"]["company_name"].value;
 
         if ((jt==null || jt=="")){
@@ -168,12 +213,12 @@ body
       </script>
     </div>
     <div style = "margin:30px">
-      <form onsubmit="return validateForm()" action = "" method = "post" name="devsearch" id="Form">
+      <form onsubmit="return validateForm3()" action = "" method = "post" name="devsearch" id="devsearch">
         <label class = "myp" >Developer Search: </label><input type = "text" name = "devusername" class = "box"/><br /><br />
-        <input type = "submit" value = " Developer Search "/><br />
+        <input type = "submit" value = " Developer Search "name="devsearch"/><br />
       </form>
       <script type="text/javascript">
-      function validateForm(){
+      function validateForm3(){
         var jt=document.forms["devsearch"]["devusername"].value;
 
         if ((jt==null || jt=="")){

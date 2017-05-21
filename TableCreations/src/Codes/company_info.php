@@ -1,5 +1,39 @@
 <?php
 
+  include('config.php');
+  session_start();
+
+  $userid = $_GET['compid'];
+  $sqlcomp = "SELECT * FROM Company WHERE user_id LIKE '".$userid."'";
+  $resultcomp = mysqli_query($db, $sqlcomp);
+  $resultcompp = mysqli_fetch_array($resultcomp, MYSQLI_ASSOC);
+
+  echo "<div class='bucenter'>
+    <div id='first-div' style='text-align:left;width:50%'>
+      <h1>RecruiDB</h1>
+    </div>
+    <div id='second-div' style='text-align:right;width:50%'>
+      <img src='./company_info.png' style='height:64;width:64'><img>
+      <img src='./messages.png' style='height:64;width:64'><img>
+    </div></div><hr/>";
+
+  echo "<h2>{$resultcompp['company_name']}</h2>
+
+  <div class='busol'>
+    <div id='first-div' style='text-align:left;'>
+        <img src='./mslogo.png' style='height:200;width:200'><img>
+    </div>
+
+    <div id=vsecond-div' style='text-align:left;'>
+        <p>Microsoft Corporation (commonly referred to as Microsoft or MS) is an American multinational technology company headquartered in Redmond, Washington, that develops, manufactures, licenses, supports and sells computer software, consumer electronics and personal computers and services. Its best known software products are the Microsoft Windows line of operating systems, Microsoft Office office suite, and Internet Explorer and Edge web browsers. Its flagship hardware products are the Xbox video game consoles and the Microsoft Surface tablet lineup. As of 2016, it was the world's largest software maker by revenue, and one of the world's most valuable companies.
+        </p>
+    </div>
+  </div>
+  <p></br></p>
+  <h3>Company Positions</h3>";
+
+
+
 ?>
 
 
@@ -41,34 +75,6 @@ body
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
-  </div>
-
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./company_info.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-
-</div>
-<hr/>
-
-<h2>Microsoft Corporation</h2>
-
-<div class="busol">
-  <div id="first-div" style="text-align:left;">
-      <img src="./mslogo.png" style="height:200;width:200"><img>
-  </div>
-
-
-  <div id="second-div" style="text-align:left;">
-      <p>Microsoft Corporation (commonly referred to as Microsoft or MS) is an American multinational technology company headquartered in Redmond, Washington, that develops, manufactures, licenses, supports and sells computer software, consumer electronics and personal computers and services. Its best known software products are the Microsoft Windows line of operating systems, Microsoft Office office suite, and Internet Explorer and Edge web browsers. Its flagship hardware products are the Xbox video game consoles and the Microsoft Surface tablet lineup. As of 2016, it was the world's largest software maker by revenue, and one of the world's most valuable companies.
-      </p>
-  </div>
-</div>
-<p></br></p>
-<h3>Company Positions</h3>
 <div class="datagrid"><table>
   <thead><tr><th>Job Title</th><th>Date</th></tr></thead>
   <tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>
