@@ -23,18 +23,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
   $insertChalengeQuery = "INSERT INTO Challenge VALUES (NULL, '$challengetitle', '$challengedeadline', '$challengetopic', 1)";
   $insertchallengeresult = mysqli_query($db, $insertChalengeQuery);
+
+  $searchlastchallengequery = "SELECT * FROM Challenge";
+  $result = $db->query($searchlastchallengequery);
+  while($row = $result->fetch_assoc()) {
+    $lastid = intval($row["challenge_id"]);
+  }
   $searchJobTitle = "SELECT * FROM Position2 WHERE p_name = ".$jobtitle;
   $searchJobTitleResult = mysqli_query($db, $searchJobTitle);
-  $row = mysqli_fetch_array($searchJobTitleResult, MYSQLI_ASSOC);
   $count = mysqli_num_rows($searchJobTitleResult);
-  $insertcp = "INSERT INTO ChallengePosition VALUES (LAST_INSERT_ID(), ".$row["ident"].")";
 
   if($count <= 0){
     $insertPositionQuery = "INSERT INTO Position2 VALUES (NULL, '$jobtitle', '$myuser_id')";
     $insertPositionResult = mysqli_query($db, $insertPositionQuery);
   }
-  echo "hello";
 
+  $searchJobTitle = "SELECT * FROM Position2 WHERE p_name = '$jobtitle'";
+  $searchJobTitleResult = mysqli_query($db, $searchJobTitle);
+  $row = mysqli_fetch_array($searchJobTitleResult, MYSQLI_ASSOC);
+
+  $insertcp = "INSERT INTO ChallengePosition VALUES (".$lastid.", ".$row["ident"].")";
   $insertcpresult = mysqli_query($db, $insertcp);
   if($insertcpresult == TRUE) echo "Challenge inserted successfully!";
   else "Error! Challenge cannot be inserted";
