@@ -2,6 +2,7 @@
 
   include('config.php');
   session_start();
+  $myuser_id = $_SESSION['myuser_id'];
 
   $chid = $_GET['chid'];
   $challengeq = "SELECT * FROM Challenge where challenge_id = ".$chid;
@@ -42,6 +43,21 @@
     }
 
     echo "</tbody></table></div><br></br><br></br><p>&nbsp;</p><h3>Comments:</h3>";
+
+    if($_SERVER["REQUEST_METHOD"] == "POST") {
+      if (isset($_POST['commentform'])) {
+
+        $comment = mysqli_real_escape_string($db,$_POST['comment']);
+
+        $insertcommentquery = "INSERT INTO Comment VALUES (NULL,'$comment', NOW(), NULL, ".$myuser_id.",".$chid.")";
+        $insertcommentresult = mysqli_query($db, $insertcommentquery);
+        //if($insertcommentresult == TRUE){
+          echo "Commented to this challenge successfully!";
+        //  header(Location:challenge_page.php?chid=$chid);
+        //}
+        //else {echo "Comment cannot be made.";}
+      }
+    }
 
 
 ?>
@@ -84,13 +100,19 @@ body
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-  <p><input type"text"/><input type="submit" value="Write Comment"/></p>
-  <p><b>Mohammad Abrahimi:</b></p>
-  <p>This so hard I cannot solve please help I am want this position so much</p>
-  <p><input type"text"/><input type="submit" value="Reply"/></p>
-  <p><b>&emsp;|Will Sawyer:</b></p>
-  <p>&emsp;|You should try your best. Good Luck!</p>
-  <p>&emsp;|<input type"text"/><input type="submit" value="Reply"/></p>
+  <form onsubmit="return validateForm()" action = "" method = "post" name="commentform" id="commentform">
+    <label class = "myp" ></label><input type = "text" name = "comment" class = "box"/><br /><br />
+    <input type = "submit" value = " Write Comment "/><br />
+  </form>
 
+  <script type="text/javascript">
+  function validateForm(){
+    var ct=document.forms["commentform"]["comment"].value;
+    if ((ct==null || ct=="")){
+      alert("Please fill the required fields!");
+      return false;
+    }
+  }
+  </script>
 
-</div>
+</html>
