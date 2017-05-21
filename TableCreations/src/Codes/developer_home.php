@@ -70,7 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     echo "<tbody>";
     //list the challenges and company names of the challenges for position search
-    $selectquery = "SELECT * FROM Position2 WHERE p_name LIKE '".$jobsearch."'";
+    $selectquery = "SELECT * FROM Position2 WHERE p_name LIKE '%".$jobsearch."%'";
     $result = mysqli_query($db, $selectquery);
     $resultselect = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $identt = intval($resultselect["ident"]);
@@ -96,7 +96,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (isset($_POST['companysearch'])) {
 
-    $sqlcomp = "SELECT * FROM Company WHERE company_name LIKE '".$companysearch."'";
+    $sqlcomp = "SELECT * FROM Company WHERE company_name LIKE '%".$companysearch."%'";
     $resultcomp = mysqli_query($db, $sqlcomp);
     $resultcompp = mysqli_fetch_array($resultcomp, MYSQLI_ASSOC);
     $count = mysqli_num_rows($resultcomp);
@@ -111,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (isset($_POST['devsearch'])) {
 
-    $sqldev = "SELECT * FROM User WHERE username LIKE '".$devsearch."'";
+    $sqldev = "SELECT * FROM User WHERE username LIKE '%".$devsearch."%'";
     $resultdev= mysqli_query($db, $sqldev);
     $resultdevv = mysqli_fetch_array($resultdev, MYSQLI_ASSOC);
     $count = mysqli_num_rows($resultdev);

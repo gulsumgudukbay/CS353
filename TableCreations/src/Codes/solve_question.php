@@ -1,6 +1,11 @@
 <?php
 
+  include('config.php');
+  session_start();
+  $myuser_id = $_SESSION['myuser_id'];
+  $chid = $_GET['qid'];
 
+  
 
 ?>
 
