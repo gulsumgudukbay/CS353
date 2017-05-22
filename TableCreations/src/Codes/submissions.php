@@ -18,7 +18,7 @@
   echo "<hr/><h2>{$challengename}</h2><hr/>";
 
   echo "<div id=leaderboard><h2>Leaderboard</h2><div class='datagrid'><table><thead><tr><th>Name</th><th>Score</th></tr></thead>
-      <tbody><tr><td>Ahmet Yılmaz</td><td>13</td></tr>
+      <tbody><tr><td>gulsumg</td><td>13</td></tr>
         <tr class='alt'><td>Hamed Abdelhemmad</td><td>25</td></tr>
         <tr><td>Mutlu Güneş</td><td>54</td></tr>
         <tr class='alt'><td>Caner Yıldırım</td><td>29</td></tr>

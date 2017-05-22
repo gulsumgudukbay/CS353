@@ -35,6 +35,21 @@
 
     echo "</tbody></table></div><br></br><br></br><p>&nbsp;</p><h3>Comments:</h3>";
 
+    echo "<div class='datagrid'><table>";
+    echo "<thead><tr><th>Comment</th><th>Author</th></thead>";
+
+    echo "<tbody>";
+
+    $sql = "SELECT * FROM Comment NATURAL JOIN User WHERE challenge_id = ".$chid;
+    $result = mysqli_query( $db, $sql);
+    while($row = mysql_fetch_array($result, MYSQLI_ASSOC)) {
+      echo "<tr> <td>" . $row["text"]. "</td><td>" . $row["username"]. "</td></tr>";
+    }
+
+    echo "</tbody></table></div>";
+
+
+
     if($_SERVER["REQUEST_METHOD"] == "POST") {
       if (isset($_POST['commentform'])) {
 
@@ -47,6 +62,8 @@
         else {echo "Comment cannot be made.";}
       }
     }
+
+
 
 ?>
 <html>

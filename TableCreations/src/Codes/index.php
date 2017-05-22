@@ -3,7 +3,7 @@
 include('config.php');
 session_start();
 
-
+$_SESSION[myuser_id] = 0;
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   // get the username and password sent from form

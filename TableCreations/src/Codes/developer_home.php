@@ -151,7 +151,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "</tbody></table></div><br></br>";
 
         }
-        else { echo "The username or username part does not belong to a developer!<br></br>";}
+      else { echo "The username or username part does not belong to a developer!<br></br>";}
 
       }
     }
@@ -267,6 +267,7 @@ body
 
   </div>
 </div>
+<a href='index.php'>LOGOUT</a>
 
 
 </html>

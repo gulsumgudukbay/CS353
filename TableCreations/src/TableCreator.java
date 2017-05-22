@@ -250,6 +250,10 @@ public class TableCreator {
 													+ "FOREIGN KEY (user_id) REFERENCES User(user_id),"
 													+ "FOREIGN KEY (question_id) REFERENCES Question(question_id)) ENGINE = InnoDB;");
 
+			stmt.executeUpdate("ALTER TABLE Submission add constraint uni unique(question_id, user_id);");
+
+			
+			
 			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 1, FLOOR(RAND()*100));");
 			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 1, FLOOR(RAND()*100));");
 

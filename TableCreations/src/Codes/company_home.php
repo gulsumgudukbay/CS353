@@ -77,6 +77,8 @@ body
 
 <p><br></p>
 
+<a href='index.php'>LOGOUT</a>
+
 <form style="text-align: left;" action="./create_challenge.php">
 <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="Create New Challenge" /></p>
 </form>
