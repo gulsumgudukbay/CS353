@@ -17,7 +17,7 @@ echo "<h1>Welcome, {$myuser_name}!</h1>";
 
 echo "<h2>Your Active Job Challenges</h2>";
 echo "<div class='datagrid'><table>";
-echo "<thead><tr><th>Job Title</th><th>Challenge Name</th><th>Submissions</th><th>Deadline</th></tr></thead>";
+echo "<thead><tr><th>Job Title</th><th>Challenge Name</th><th>Submissions</th><th>Deadline</th><th>Go To Submissions</th></tr></thead>";
 echo "<tbody>";
 
 $sql = "SELECT Position2.user_id, Position2.p_name, Position2.ident, ChallengePosition.challenge_id, Challenge.name, Challenge.deadline FROM Position2, ChallengePosition, Challenge WHERE Position2.ident = ChallengePosition.ident AND ChallengePosition.challenge_id = Challenge.challenge_id AND Position2.user_id = ".$myuser_id;
@@ -28,7 +28,7 @@ while($row = $result->fetch_assoc()) {
   $result2 = $db->query($sql2);
   $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
-  echo "<tr> <td>" . $row["p_name"]. "</td><td>" . $row["name"]. "</td><td>" . $row2["cnt"]. "</td><td>" . $row["deadline"]. "</td>";
+  echo "<tr> <td>" . $row["p_name"]. "</td><td>" . $row["name"]. "</td><td>" . $row2["cnt"]. "</td><td>" . $row["deadline"]. "</td><td><a href='submissions.php?chid={$row['challenge_id']}'>CLICK</a></td>";
 }
 
 echo "</tbody></table></div><p><br></p>";

@@ -1,5 +1,44 @@
 <?php
+  include('config.php');
+  session_start();
+  $myusername = $_SESSION['myusername'];
+  $mypassword = $_SESSION['mypassword'];
+  $myuser_id = $_SESSION['myuser_id'];
 
+
+  echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1><a href='company_home.php'>RecruiDB</a></h1></div>";
+  echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
+
+  $chid = $_GET['chid'];
+  $challengeq = "SELECT * FROM Challenge where challenge_id = ".$chid;
+  $result = $db->query($challengeq);
+  $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  $challengename = $row['name'];
+
+  echo "<hr/><h2>{$challengename}</h2><hr/>";
+
+  echo "<div id=leaderboard><h2>Leaderboard</h2><div class='datagrid'><table><thead><tr><th>Name</th><th>Score</th></tr></thead>
+      <tbody><tr><td>Ahmet Yılmaz</td><td>13</td></tr>
+        <tr class='alt'><td>Hamed Abdelhemmad</td><td>25</td></tr>
+        <tr><td>Mutlu Güneş</td><td>54</td></tr>
+        <tr class='alt'><td>Caner Yıldırım</td><td>29</td></tr>
+        <tr><td>Cem Yılmaz</td><td>19</td></tr>";
+  echo "</tbody></table></div></div>&nbsp;&nbsp;<hr/><hr/>";
+  echo "<div id=submissions>
+    <h2>Submissions</h2>
+    <div class='datagrid'><table><thead><tr><th>Owner</th><th>Question</th><th>Score</th></tr></thead><tbody>";
+  $challengeq = "SELECT * FROM Submission NATURAL JOIN Question where challenge_id = ".$chid;
+  $result = $db->query($challengeq);
+
+  while($row = $result->fetch_assoc()) {
+    $sql2 = "SELECT * FROM User WHERE user_id = ".$row["user_id"];
+    $result2 = $db->query($sql2);
+    $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
+
+    echo "<tr> <td>" . $row2["username"]. "</td><td>" . $row["title"]. "</td><td>" . $row["sub_score"]. "</td></tr>";
+  }
+
+  echo "</tbody></table></div></div>";
 ?>
 
 
@@ -42,63 +81,6 @@ body
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-<div class="bucenter">
-  <div id="first-div" style="text-align:left;width:50%">
-    <h1>RecruiDB</h1>
-  </div>
 
-  <div id="second-div" style="text-align:right;width:50%">
-    <img src="./dev_profile.png" style="height:64;width:64"><img>
-    <img src="./dev_stats.png" style="height:64;width:64"><img>
-    <img src="./messages.png" style="height:64;width:64"><img>
-  </div>
-</div>
 
-<hr/>
-
-<h2>Nameless Challenge</h2>
-<hr/><hr/>
-
-<div id=leaderboard>
-  <h2>Leaderboard</h2>
-  <div class="datagrid"><table>
-    <thead><tr><th>Name</th><th>Score</th></tr></thead>
-    <tfoot><tr><td colspan="4"><div id="paging"><ul><li><a href="#"><span>Previous</span></a></li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr></tfoot>
-    <tbody><tr><td>Ahmet Yılmaz</td><td>13</td></tr>
-      <tr class="alt"><td>Hamed Abdelhemmad</td><td>25</td></tr>
-      <tr><td>Mutlu Güneş</td><td>54</td></tr>
-      <tr class="alt"><td>Caner Yıldırım</td><td>29</td></tr>
-      <tr><td>Cem Yılmaz</td><td>19</td></tr>
-    </tbody>
-    </table>
-  </div>
-</div>
-
-&nbsp;
-&nbsp;
-<hr/><hr/>
-
-<div id=submissions>
-  <h2>Submissions</h2>
-  <div id="ch1" style="background-color:#11BB11;width:500px">
-    <h3>Hamed Abdelhemmad, Question #3</h3>
-    <h4>Answer:</h4>
-    <p2>SELECT EMP_ID, LAST_NAME FROM EMPLOYEE_TBL WHERE CITY = 'INDIANAPOLIS' ORDER BY EMP_ID;</p2>
-    <hr/><hr/>
-  </div>
-
-  <div id="ch1" style="background-color:#11BB11;width:500px">
-    <h3>Mutlu Güneş, Question #4</h3>
-    <h4>Answer:</h4>
-    <p2>SELECT EMP_ID FROM EMPLOYEE_TBL WHERE CITY = 'INDIANAPOLIS' ORDER BY EMP_ID;</p2>
-    <hr/><hr/>
-  </div>
-
-  <div id="ch1" style="background-color:#BB1111;width:500px">
-    <h3>Caner Yıldırım, Question #1</h3>
-    <h4>Answer:</h4>
-    <p2>SELECT LAST_NAME FROM EMPLOYEE_TBL WHERE CITY = 'INDIANAPOLIS' ORDER BY EMP_ID;</p2>
-    <hr/><hr/>
-  </div>
-</div>
 </html>
