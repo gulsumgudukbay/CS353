@@ -5,71 +5,62 @@
   $mypassword = $_SESSION['mypassword'];
   $myuser_id = $_SESSION['myuser_id'];
   $profile_id = $_GET['user'];
-  $developer_top_bar =
-  '
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <div class="bucenter">
-    <div id="first-div" style="text-align:left;width:50%">
-      <h1>RecruiDB</h1>
-    </div>
-    <div id="second-div" style="text-align:right;width:50%">
-      <img src="./dev_profile.png" style="height:64;width:64"><img>
-      <img src="./dev_stats.png" style="height:64;width:64"><img>
-      <img src="./messages.png" style="height:64;width:64"><img>
-    </div>
-  </div>
-  <hr/>
-  ';
-  if($_SERVER["REQUEST_METHOD"] == "POST")
-  {
-    if( isset($_POST["endorse"]))
-    {
-      $endorse_skill_name = $_POST["endorse"];
-      $sql = "SELECT skill_id FROM Skill WHERE skill_name = '$endorse_skill_name'";
-      $result = mysqli_query($db, $sql);
-      $endorse_skill_id = mysqli_fetch_array($result)["skill_id"];
-      $sql = "INSERT INTO Endorsement VALUES ($endorse_skill_id, $profile_id, $myuser_id);";
-      $result = mysqli_query($db, $sql);
-    }
-    if( isset($_POST["add_skill"]))
-    {
-      if( $_POST["add_skill"] != 0)
-      {
-        $endorse_skill_name = $_POST["skill_name"];
-        $sql = "SELECT * FROM Skill WHERE skill_name = '$endorse_skill_name'";
-        $result = mysqli_query($db, $sql);
-        if( $endorse_skill_id = mysqli_fetch_array($result)["skill_id"])
-        {
-          $sql = "INSERT INTO DeveloperSkill
-                  VALUES ($endorse_skill_id, $myuser_id);";
-          $result = mysqli_query($db, $sql);
-        }
-        else
-        {
-          $sql = "INSERT INTO Skill
-                  VALUES (NULL, '$endorse_skill_name');";
-          $result = mysqli_query($db, $sql);
-          $sql = "SELECT * FROM Skill WHERE skill_name = '$endorse_skill_name'";
-          $result = mysqli_query($db, $sql);
-          $endorse_skill_id = mysqli_fetch_array($result)["skill_id"];
-          $sql = "INSERT INTO DeveloperSkill
-                  VALUES ($endorse_skill_id, $myuser_id);";
-          $result = mysqli_query($db, $sql);
-        }
-      }
-    }
+  echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1><a href='index.php'>RecruiDB</a></h1></div>";
+  echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
 
-    if( isset($_POST["editpic"]))
-    {
-      if( $_POST["editpic"] != 0)
-      {
-        $picurl = $_POST["picurl"];
-        $sql = "UPDATE User SET picurl = '$picurl' WHERE user_id = '$myuser_id'";
-        $result = mysqli_query($db, $sql);
-      }
-    }
+   if($_SERVER["REQUEST_METHOD"] == "POST")
+   {
+     if( isset($_POST["endorse"]))
+     {
+       $endorse_skill_name = $_POST["endorse"];
+       $sql = "SELECT skill_id FROM Skill WHERE skill_name LIKE '$endorse_skill_name'";
+       $result = mysqli_query($db, $sql);
+       $endorse_skill_id = mysqli_fetch_array($result, MYSQLI_ASSOC);
+       $endorse_skill_id = $endorse_skill_id["skill_id"];
+       $sql = "INSERT INTO Endorsement VALUES (".$endorse_skill_id.", ".$profile_id.", ".$myuser_id.")";
+       $result = mysqli_query($db, $sql);
+     }
+     if( isset($_POST["add_skill"]))
+     {
+       if( $_POST["add_skill"] != 0)
+       {
+         $endorse_skill_name = $_POST["skill_name"];
+         $sql = "SELECT * FROM Skill WHERE skill_name LIKE '$endorse_skill_name'";
+         $result = mysqli_query($db, $sql);
+         $endorse_skill_id = mysqli_fetch_array($result, MYSQLI_ASSOC);
+         if( $endorse_skill_id["skill_id"])
+         {
+           $sql = "INSERT INTO DeveloperSkill
+                   VALUES (".$endorse_skill_id.", ".$myuser_id.")";
+           $result = mysqli_query($db, $sql);
+         }
+         else
+         {
+           $sql = "INSERT INTO Skill
+                   VALUES (NULL, '$endorse_skill_name')";
+           $result = mysqli_query($db, $sql);
+           $sql = "SELECT * FROM Skill WHERE skill_name LIKE '$endorse_skill_name'";
+           $result = mysqli_query($db, $sql);
+           $endorse_skill_id = mysqli_fetch_array($result,MYSQLI_ASSOC);
+           $endorse_skill_id = $endorse_skill_id["skill_id"];
+           $sql = "INSERT INTO DeveloperSkill
+                   VALUES ($endorse_skill_id, $myuser_id);";
+           $result = mysqli_query($db, $sql);
+         }
+       }
+     }
 
-  }
+     if( isset($_POST["editpic"]))
+     {
+       if( $_POST["editpic"] != 0)
+       {
+         $picurl = $_POST["picurl"];
+         $sql = "UPDATE User SET picurl = '$picurl' WHERE user_id = '$myuser_id'";
+       $result = mysqli_query($db, $sql);
+       }
+     }
+
+   }
 
   $sql = "SELECT * FROM User WHERE user_id = $profile_id";
   $result = mysqli_query($db,$sql);
@@ -138,10 +129,10 @@
     '.$dev_info_div.'
   </div>
   ';
-  echo $developer_top_bar . "<br/>";
+  // echo $developer_top_bar . "<br/>";
   echo $profile_div;
   echo '<h3>Skills</h3>';
-  while($row = mysqli_fetch_array($endorsed_result))
+  while($row = mysqli_fetch_array($endorsed_result, MYSQLI_ASSOC))
   {
      echo $row['skill_name'] . " [" . $row['count(*)'] . "]";
      echo '
@@ -150,7 +141,7 @@
      </form><br/>
      ';
   }
-  while($row = mysqli_fetch_array($not_endorsed_result))
+  while($row = mysqli_fetch_array($not_endorsed_result, MYSQLI_ASSOC))
   {
      echo $row['skill_name'] . " [0]<br/>";
      echo '
@@ -170,7 +161,7 @@
     ';
   }
 ?>
-
+<html>
 <style>
 body
 {
@@ -200,3 +191,4 @@ body
 }
 .datagrid table { border-collapse: collapse; text-align: left; width: 100%; } .datagrid {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }.datagrid table td, .datagrid table th { padding: 3px 10px; }.datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #0070A8; } .datagrid table thead th:first-child { border: none; }.datagrid table tbody td { color: #00557F; border-left: 1px solid #E1EEF4;font-size: 12px;font-weight: normal; }.datagrid table tbody .alt td { background: #E1EEf4; color: #00557F; }.datagrid table tbody td:first-child { border-left: none; }.datagrid table tbody tr:last-child td { border-bottom: none; }.datagrid table tfoot td div { border-top: 1px solid #006699;background: #E1EEf4;} .datagrid table tfoot td { padding: 0; font-size: 12px } .datagrid table tfoot td div{ padding: 2px; }.datagrid table tfoot td ul { margin: 0; padding:0; list-style: none; text-align: right; }.datagrid table tfoot  li { display: inline; }.datagrid table tfoot li a { text-decoration: none; display: inline-block;  padding: 2px 8px; margin: 1px;color: #FFFFFF;border: 1px solid #006699;-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; }.datagrid table tfoot ul.active, .datagrid table tfoot ul a:hover { text-decoration: none;border-color: #00557F; color: #FFFFFF; background: none; background-color:#006699;}div.dhtmlx_window_active, div.dhx_modal_cover_dv { position: fixed !important; }
 </style>
+</html>
