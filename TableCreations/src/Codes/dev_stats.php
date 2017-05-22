@@ -28,6 +28,7 @@ $sql = "SELECT c.name, count(*), sum(s.sub_score)
         FROM Challenge AS c, Submission AS s, Question AS q
         WHERE c.challenge_id = q.challenge_id
         AND s.question_id = q.question_id
+        AND s.user_id = '$myuser_id'
         GROUP BY c.name";
 $result = $db->query($sql);
 
