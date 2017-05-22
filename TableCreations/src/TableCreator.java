@@ -48,6 +48,10 @@ public class TableCreator {
 			stmt.execute("DROP TABLE IF EXISTS Endorsement;");
 			stmt.execute("DROP TABLE IF EXISTS DeveloperSkill;");
 			stmt.execute("DROP TABLE IF EXISTS Skill;");
+			
+			stmt.execute("DROP VIEW IF EXISTS inbox_view;");
+			stmt.execute("DROP VIEW IF EXISTS outbox_view;");
+
 			stmt.execute("DROP TABLE IF EXISTS Message;");
 			stmt.execute("DROP TABLE IF EXISTS ChallengePosition;");
 
@@ -145,6 +149,9 @@ public class TableCreator {
 			stmt.executeUpdate("INSERT INTO Message VALUES (NULL, 'HELLO FROM 1 to 2', NOW(), 2, 1);");
 			stmt.executeUpdate("INSERT INTO Message VALUES (NULL, 'HI FROM 2 to 1', NOW(), 1, 2);");
 
+
+			stmt.executeUpdate("CREATE VIEW inbox_view AS select msg_id, to_id, from_id, email, text, msg_date FROM  Message, User where Message.from_id = User.user_id;");
+			stmt.executeUpdate("CREATE VIEW outbox_view AS select msg_id, to_id, from_id, email, text, msg_date FROM  Message, User where Message.to_id = User.user_id;");
 
 			stmt.executeUpdate("CREATE TABLE Language ( language_id int PRIMARY KEY AUTO_INCREMENT,"
 													+ "lang_name varchar(30) NOT NULL) ENGINE = InnoDB; ");

@@ -31,7 +31,7 @@
 
   echo "<tbody>";
 
-  $sql = "SELECT * FROM Message, User WHERE Message.from_id = User.user_id AND to_id = ".$userid;
+  $sql = "SELECT * FROM inbox_view WHERE to_id = ".$userid;
   $result = $db->query($sql);
   while($row = $result->fetch_assoc()) {
     echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td><td><a href = 'messages.php?userid={$userid}&delete={$row['msg_id']}'><input id='delbtn' type='submit' value='Delete'/></a></td></tr>";
@@ -46,7 +46,7 @@
 
   echo "<tbody>";
 
-  $sql = "SELECT * FROM Message, User WHERE Message.to_id = User.user_id AND from_id = ".$userid;
+  $sql = "SELECT * FROM outbox_view WHERE from_id = ".$userid;
   $result = $db->query($sql);
   while($row = $result->fetch_assoc()) {
     echo "<tr> <td>" . $row["email"]. "</td><td>" . $row["text"]. "</td><td>{$row['msg_date']}</td><td><a href = 'messages.php?userid={$userid}&delete={$row['msg_id']}'><input id='delbtn' type='submit' value='Delete'/></a></td></tr>";
