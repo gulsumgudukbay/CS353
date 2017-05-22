@@ -114,7 +114,7 @@
   '
   <div id="second-div" style="text-align:left;">
       <h2>'.$profile_name.'</h2>
-      <form style="text-align: left;" action="./create_challenge.html">
+      <form style="text-align: left;" action="./dev_stats.php">
       <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"></span></span> <input type="submit" value="See stats!" /></p>
       </form>
       <p>School: <a style="font-style:italic">'. $profile_school .'</a></p>
