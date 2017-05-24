@@ -40,7 +40,7 @@
 
     echo "<tbody>";
 
-    $sql = "SELECT * FROM Comment NATURAL JOIN User WHERE challenge_id = ".$chid;
+    $sql = "SELECT * FROM Comment c, User u WHERE c.user_id = u.user_id AND c.challenge_id = ".$chid;
     $result = mysqli_query( $db, $sql);
     while($row = mysql_fetch_array($result, MYSQLI_ASSOC)) {
       echo "<tr> <td>" . $row["text"]. "</td><td>" . $row["username"]. "</td></tr>";

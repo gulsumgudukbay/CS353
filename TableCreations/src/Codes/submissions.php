@@ -17,12 +17,16 @@
 
   echo "<hr/><h2>{$challengename}</h2><hr/>";
 
-  echo "<div id=leaderboard><h2>Leaderboard</h2><div class='datagrid'><table><thead><tr><th>Name</th><th>Score</th></tr></thead>
-      <tbody><tr><td>gulsumg</td><td>13</td></tr>
-        <tr class='alt'><td>Hamed Abdelhemmad</td><td>25</td></tr>
-        <tr><td>Mutlu Güneş</td><td>54</td></tr>
-        <tr class='alt'><td>Caner Yıldırım</td><td>29</td></tr>
-        <tr><td>Cem Yılmaz</td><td>19</td></tr>";
+  echo "<div id=leaderboard><h2>Leaderboard</h2><div class='datagrid'><table><thead><tr><th>Name</th><th>Challenge Score</th></tr></thead><tbody>";
+
+  $leaderquery = "SELECT u.username, s.user_id, sum(s.sub_score) AS 'scor' FROM User u, Submission s, Question q WHERE u.user_id = s.user_id AND s.question_id = q.question_id AND q.challenge_id = '$chid' GROUP BY user_id HAVING scor BETWEEN 100 AND 10000 ";
+  $resultleader = $db->query($leaderquery);
+  while($row = $resultleader->fetch_assoc()) {
+    echo "<tr> <td>" . $row["username"]. "</td><td>" . $row["scor"]. "</td></tr>";
+
+  }
+
+
   echo "</tbody></table></div></div>&nbsp;&nbsp;<hr/><hr/>";
   echo "<div id=submissions>
     <h2>Submissions</h2>

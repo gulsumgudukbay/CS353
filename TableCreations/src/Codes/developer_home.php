@@ -151,8 +151,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "</tbody></table></div><br></br>";
 
         }
-      else { echo "The username or username part does not belong to a developer!<br></br>";}
-
       }
     }
     else {
@@ -160,9 +158,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
   }
-
-
-
 }
 
 ?>
@@ -207,7 +202,7 @@ body
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 
-<div align = "left" style = "position: fixed;bottom: 0;width: 100%;" >
+<div align = "left" ;width: 100%;" >
   <p><br></p>
 
   <div style = "border: solid 1px #333333; " align = "left">

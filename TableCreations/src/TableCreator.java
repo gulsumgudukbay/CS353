@@ -102,6 +102,13 @@ public class TableCreator {
 													+ "VALUES (LAST_INSERT_ID(), 'Bilkent University');");
 
 			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, picurl, biography) "
+													+ "VALUES (NULL, 'yigitp', 'yigit', 'yigit@gmail.com', 'yigit123', "
+													+ "'yigit.com', 'https://i.ytimg.com/vi/bNc6O5c40SI/hqdefault.jpg', 'Was born in 1996.');");
+
+			stmt.executeUpdate("INSERT INTO Developer (user_id, school) "
+													+ "VALUES (LAST_INSERT_ID(), 'Bilkent University');");
+			
+			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, picurl, biography) "
 													+ "VALUES (NULL, 'erolegemen', 'Apple', 'erolegemen@metu.com', 'erol123', "
 													+ "'eegemen.com', 'https://www.askideas.com/media/19/Hamster-With-Cap-Funny-Picture.jpg', 'Born on 1999');");
 
@@ -206,10 +213,18 @@ public class TableCreator {
 													+ "title varchar(50) NOT NULL, "
 													+ "FOREIGN KEY (challenge_id) references Challenge(challenge_id) ) ENGINE = InnoDB;");
 
-			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'medium', 1, 'Knapsack Problem');");
-			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'hard', 2, 'Dictator Problem');");
-			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'easy', 3, 'Trump Problem');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'easy', 1, 'Knapsack Problem');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'easy', 2, 'Dictator Problem');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'easy', 3, 'Activity Selection Problem');");
 
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'medium', 1, 'Coin Change Problem');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'medium', 2, 'Yolsuzluk Problem');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'medium', 3, 'K Centers Problem');");
+			
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'hard', 1, 'Egg Dropping Puzzle');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'hard', 2, 'Internal War Problem');");
+			stmt.executeUpdate("INSERT INTO Question VALUES(NULL, 'hard', 3, 'Huffman Coding');");
+			
 			stmt.executeUpdate("CREATE TABLE Position2( ident int PRIMARY KEY AUTO_INCREMENT, "
 													+ "p_name varchar(30), "
 													+ "user_id int, "
@@ -220,7 +235,7 @@ public class TableCreator {
 
 			stmt.executeUpdate("CREATE INDEX posind ON Position2 (p_name, user_id);");
 
-			stmt.executeUpdate("INSERT INTO Position2 VALUES( NULL, 'Software Developer', 2);");
+			stmt.executeUpdate("INSERT INTO Position2 VALUES( NULL, 'Software Developer', 3);");
 
 			stmt.executeUpdate("CREATE TABLE ChallengePosition ( challenge_id int, "
 													+ "ident int, "
@@ -253,13 +268,22 @@ public class TableCreator {
 			stmt.executeUpdate("ALTER TABLE Submission add constraint uni unique(question_id, user_id);");
 
 			
-			
+			//gulsum submissions
 			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 1, FLOOR(RAND()*100));");
-			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 1, FLOOR(RAND()*100));");
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 4, FLOOR(RAND()*100));");
 
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 7, FLOOR(RAND()*100));");
 			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 2, FLOOR(RAND()*100));");
-			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 3, FLOOR(RAND()*100));");
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 1, 6, FLOOR(RAND()*100));");
 
+			//yigit submissions
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 2, 4, FLOOR(RAND()*100));");
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 2, 5, FLOOR(RAND()*100));");
+
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 2, 7, FLOOR(RAND()*100));");
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 2, 3, FLOOR(RAND()*100));");
+			stmt.executeUpdate("INSERT INTO Submission VALUES (NULL, NOW(), 2, 9, FLOOR(RAND()*100));");
+			
 			stmt.executeUpdate("CREATE TABLE Experience ( company_name varchar(40), "
 													+ "start_date date, "
 													+ "end_date date, "
@@ -310,7 +334,8 @@ public class TableCreator {
 
 			stmt.executeUpdate("INSERT INTO Comment VALUES (NULL, 'THIS CHALLENGE IS AWSAM.', NOW(), NULL, 1, 1);");
 			stmt.executeUpdate("INSERT INTO Comment VALUES (NULL, 'I AGREE!.', NOW(), 1, 2, 1);");
-
+			stmt.executeUpdate("INSERT INTO Comment VALUES (NULL, 'THIS CHALLENGE IS BAD.', NOW(), NULL, 1, 3);");
+			stmt.executeUpdate("INSERT INTO Comment VALUES (NULL, 'I DONT AGREE!.', NOW(), 1, 2, 3);");
 
 
 		} catch (SQLException e) {
