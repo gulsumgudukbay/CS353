@@ -24,17 +24,20 @@ $developer_top_bar =
 echo $developer_top_bar;
 
 echo '<h3>Challenges Solved</h3>';
-$sql = "SELECT c.challenge_name
-        FROM Challenges AS c
-        WHERE";
+$sql = "SELECT c.name, count(*), sum(s.sub_score)
+        FROM Challenge AS c, Submission AS s, Question AS q
+        WHERE c.challenge_id = q.challenge_id
+        AND s.question_id = q.question_id
+        AND s.user_id = '$myuser_id'
+        GROUP BY c.name";
 $result = $db->query($sql);
 
 echo "<div class='datagrid'><table>";
-echo "<thead><tr><th>Challenge Name</th><th>Question Count</th><th>Submissions</th></tr></thead>";
+echo "<thead><tr><th>Challenge Name</th><th>Submission Count</th><th>Total Score</th></tr></thead>";
 echo "<tbody>";
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
 {
-  echo "<tr><td>".."</td><td>" .. "</td><td>" .. "</td></tr>";
+  echo "<tr><td>". $row['name']."</td><td>" .$row['count(*)']. "</td><td>" .$row['sum(s.sub_score)']. "</td></tr>";
 }
 echo "</tbody></table></div><br></br>";
 

@@ -6,7 +6,7 @@
   $myuser_id = $_SESSION['myuser_id'];
   $profile_id = $_GET['user'];
   echo "<div class='bucenter'><div id='first-div' style='text-align:left;width:50%'><h1><a href='index.php'>RecruiDB</a></h1></div>";
-  echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div>";
+  echo "<div id='second-div' style='text-align:right;width:50%'><a href=developer_profile.php?user={$myuser_id}><img src='./dev_profile.png' style='height:64;width:64'></a><a href=dev_stats.php><img src='./dev_stats.png' style='height:64;width:64'></a><a href=messages.php?userid={$myuser_id}><img src='./messages.png' style='height:64;width:64'></a></div></div><hr/>";
 
    if($_SERVER["REQUEST_METHOD"] == "POST")
    {
