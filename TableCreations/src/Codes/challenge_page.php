@@ -39,11 +39,11 @@
     echo "<thead><tr><th>Comment</th><th>Author</th></thead>";
 
     echo "<tbody>";
-
-    $sql = "SELECT * FROM Comment c, User u WHERE c.user_id = u.user_id AND c.challenge_id = ".$chid;
+    $chid2 = intval($chid);
+    $sql = "SELECT c.text, u.username, c.challenge_id, u.user_id FROM Comment c, User u WHERE c.user_id = u.user_id AND c.challenge_id = $chid2" ;
     $result = mysqli_query( $db, $sql);
-    while($row = mysql_fetch_array($result, MYSQLI_ASSOC)) {
-      echo "<tr> <td>" . $row["text"]. "</td><td>" . $row["username"]. "</td></tr>";
+    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+      echo "<tr><td>" . $row["text"]. "</td><td>" . $row["username"]. "</td></tr>";
     }
 
     echo "</tbody></table></div>";
@@ -119,5 +119,13 @@ body
     }
   }
   </script>
+
+  <form style="text-align: center;" action="./company_home.php">
+  <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"><br /></span></span> <input type="submit" value="Go back" /></p>
+  <a href='index.php'><button type="button">Logout</button></a>
+  <p>&nbsp;</p>
+  <hr />
+  <p>&nbsp;</p>
+  </form>
 
 </html>

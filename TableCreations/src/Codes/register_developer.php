@@ -108,4 +108,12 @@ function validateForm(){
 <h4>&nbsp;Don't have an account?</h4>
 <p><a href="./register_developer.php">Create a developer account!</a></p>
 <p><a href="./register_company.php">Create a company account!</a></p>
+
+<form style="text-align: center;" action="./index.php">
+<p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"><br /></span></span> <input type="submit" value="Go back" /></p>
+<a href='index.php'><button type="button">Logout</button></a>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+</form>
 </html>

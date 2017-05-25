@@ -86,6 +86,9 @@ public class TableCreator {
 													+ "picurl varchar(100), "
 													+ "biography varchar(500) ) ENGINE = InnoDB;");
 
+			stmt.executeUpdate("CREATE INDEX unindex ON User (username) USING BTREE;");
+
+			
 			stmt.executeUpdate("CREATE TABLE Developer( user_id int PRIMARY KEY AUTO_INCREMENT, "
 													+ "school varchar(40) NOT NULL, "
 													+ "FOREIGN KEY (user_id) references User(user_id) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB;");
@@ -107,6 +110,14 @@ public class TableCreator {
 
 			stmt.executeUpdate("INSERT INTO Developer (user_id, school) "
 													+ "VALUES (LAST_INSERT_ID(), 'Bilkent University');");
+			
+			
+			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, picurl, biography) "
+													+ "VALUES (NULL, 'morgulyilmaz', 'yilmazmorgul', 'yilmazmorgul@gmail.com', 'ym123', "
+													+ "'yilmazmorgul.com', 'http://d.gercekgundem.com/news/130835.jpg', 'Was born in 1970.');");
+								
+			stmt.executeUpdate("INSERT INTO Developer (user_id, school) "
+													+ "VALUES (LAST_INSERT_ID(), 'Atilim University');");
 			
 			stmt.executeUpdate("INSERT INTO User (user_id, username, user_name, email, password, website, picurl, biography) "
 													+ "VALUES (NULL, 'erolegemen', 'Apple', 'erolegemen@metu.com', 'erol123', "
@@ -235,7 +246,7 @@ public class TableCreator {
 
 			stmt.executeUpdate("CREATE INDEX posind ON Position2 (p_name, user_id);");
 
-			stmt.executeUpdate("INSERT INTO Position2 VALUES( NULL, 'Software Developer', 3);");
+			stmt.executeUpdate("INSERT INTO Position2 VALUES( NULL, 'Software Developer', 4);");
 
 			stmt.executeUpdate("CREATE TABLE ChallengePosition ( challenge_id int, "
 													+ "ident int, "

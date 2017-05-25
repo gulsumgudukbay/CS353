@@ -85,6 +85,12 @@ body
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-
+<form style="text-align: center;" action="./company_home.php">
+<p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"><br /></span></span> <input type="submit" value="Go back" /></p>
+<a href='index.php'><button type="button">Logout</button></a>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+</form>
 
 </html>

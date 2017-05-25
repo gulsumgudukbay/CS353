@@ -125,14 +125,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   if (isset($_POST['devsearch'])) {
-
+    echo "<div>";
     echo "<h2>Developer Search Results For {$devsearch}: </h2>";
 
-    $sqldev = "SELECT * FROM User WHERE username LIKE '%".$devsearch."%'";
+    $sqldev = "SELECT * FROM User WHERE username LIKE '%".$devsearch."%' ORDER BY username";
     $resultdev= $db->query($sqldev);
     $devcount = mysqli_num_rows($resultdev);
 
     if ($devcount >= 1) { //user found
+      echo "<div class='datagrid'>";
       $index = 0;
       while($resultdevv = $resultdev->fetch_assoc()){
         $sqldev2 = "SELECT * FROM Developer WHERE user_id=".$resultdevv["user_id"];
@@ -141,23 +142,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if($count2 >= 1 ){ //user found and is a developer
           if($index == 0)
-            echo "<div class='datagrid'><table><thead><tr><th>Developer Username</th><th>Go To Developer Profile Page!</th></tr></thead><tbody>";
+            echo "<table><thead><tr><th>Developer Username</th><th>Go To Developer Profile Page!</th></tr></thead><tbody>";
           while($resultdevv2 = $resultdev2->fetch_assoc()){
             echo "<tr> <td>".$resultdevv["username"]."</td><td><a href='developer_profile.php?user={$resultdevv2['user_id']}'>Profile Page</a></td></tr>";
           }
           $index = $index + 1;
 
           if($index+1 == $count2)
-            echo "</tbody></table></div><br></br>";
+            echo "</tbody></table>";
 
         }
       }
+      echo "</div>";
     }
     else {
       echo "Developer does not exist!<br></br>";
     }
 
   }
+  echo "</div>";
+
 }
 
 ?>
@@ -202,10 +206,10 @@ body
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 
-<div align = "left" ;width: 100%;" >
-  <p><br></p>
+<div align = "left";width: 100%;" >
+<p><br></p>
 
-  <div style = "border: solid 1px #333333; " align = "left">
+  <div style = "border: solid 1px #333333;">
     <div style = "margin:30px">
       <form onsubmit="return validateForm1()" action = "" method = "post" name="jobsearch" id="jobsearch">
         <label class = "myp" >Job Search: </label><input type = "text" name = "jobtitle" class = "box"/><br /><br />
@@ -219,10 +223,6 @@ body
           alert("Please fill the required field!");
           return false;
         }
-      }
-      function DoNav(theUrl)
-      {
-        document.location.href = theUrl;
       }
       </script>
     </div>
@@ -260,9 +260,16 @@ body
     </div>
     <p><br></p>
 
+    <form style="text-align: center;" action="./index.php">
+    <p><span style="font-family: Arial;"><span style="font-size: 13.3333px;"><br /></span></span> <input type="submit" value="Go back" /></p>
+    <a href='index.php'><button type="button">Logout</button></a>
+    <p>&nbsp;</p>
+    <hr />
+    <p>&nbsp;</p>
+    </form>
+    <p><br></p>
   </div>
-</div>
-<a href='index.php'>LOGOUT</a>
+
 
 
 </html>
